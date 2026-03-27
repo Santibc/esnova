@@ -1,0 +1,196 @@
+---
+description: "Start XAMPP, Laravel, Vite for this project (betoge) and open Chrome with proper verification"
+tools: [Bash]
+priority: 1
+project: betoge
+---
+
+# Starting Betoge Development Environment
+
+Starting development environment for **betoge** project...
+
+```bash
+echo "🚀 Starting development environment for: betoge"
+
+# Execute PowerShell script to start all services for betoge
+powershell.exe -ExecutionPolicy Bypass -Command "
+\$PROJECT = 'betoge'
+\$projectPath = 'C:\\xampp\\htdocs\\betoge'
+
+Write-Host '🚀 Iniciando entorno de desarrollo para: betoge' -ForegroundColor Green
+Write-Host '⏳ Este proceso puede tomar 30-60 segundos...' -ForegroundColor Yellow
+Write-Host ''
+
+# Function to wait for service
+function Wait-ForService {
+    param(\$ServiceName, \$ProcessName, \$Url = \$null, \$MaxWait = 30)
+    
+    Write-Host \"⏳ Esperando \$ServiceName...\" -ForegroundColor Yellow -NoNewline
+    
+    for (\$i = 0; \$i -lt \$MaxWait; \$i++) {
+        if (\$Url) {
+            try {
+                \$response = Invoke-WebRequest -Uri \$Url -TimeoutSec 2 -UseBasicParsing -ErrorAction Stop
+                if (\$response.StatusCode -eq 200) {
+                    Write-Host \" ✅\" -ForegroundColor Green
+                    return \$true
+                }
+            } catch { }
+        } else {
+            if (Get-Process -Name \$ProcessName -ErrorAction SilentlyContinue) {
+                Write-Host \" ✅\" -ForegroundColor Green
+                return \$true
+            }
+        }
+        Write-Host \".\" -ForegroundColor Yellow -NoNewline
+        Start-Sleep 2
+    }
+    Write-Host \" ❌\" -ForegroundColor Red
+    return \$false
+}
+
+# Start XAMPP services
+Write-Host '🔧 Iniciando servicios XAMPP...' -ForegroundColor Cyan
+
+# Start Apache
+if (-not (Get-Process -Name 'httpd' -ErrorAction SilentlyContinue)) {
+    try {
+        Start-Service 'Apache2.4' -ErrorAction Stop
+        Write-Host '✅ Apache servicio iniciado' -ForegroundColor Green
+    } catch {
+        Start-Process 'C:\\xampp\\apache\\bin\\httpd.exe' -WindowStyle Hidden
+        Write-Host '🔄 Apache proceso iniciado' -ForegroundColor Yellow
+    }
+} else {
+    Write-Host '✅ Apache ya está ejecutándose' -ForegroundColor Green
+}
+
+# Start MySQL
+if (-not (Get-Process -Name 'mysqld' -ErrorAction SilentlyContinue)) {
+    try {
+        Start-Service 'MySQL' -ErrorAction Stop
+        Write-Host '✅ MySQL servicio iniciado' -ForegroundColor Green
+    } catch {
+        Start-Process 'C:\\xampp\\mysql\\bin\\mysqld.exe' -ArgumentList '--defaults-file=C:\\xampp\\mysql\\bin\\my.ini' -WindowStyle Hidden
+        Write-Host '🔄 MySQL proceso iniciado' -ForegroundColor Yellow
+    }
+} else {
+    Write-Host '✅ MySQL ya está ejecutándose' -ForegroundColor Green
+}
+
+# Wait for Apache to be ready
+if (-not (Wait-ForService 'Apache' 'httpd' 'http://localhost')) {
+    Write-Host '❌ Error: Apache no pudo iniciarse correctamente' -ForegroundColor Red
+    exit 1
+}
+
+# Wait for MySQL to be ready
+if (-not (Wait-ForService 'MySQL' 'mysqld')) {
+    Write-Host '❌ Error: MySQL no pudo iniciarse correctamente' -ForegroundColor Red
+    exit 1
+}
+
+Write-Host ''
+
+# Start Laravel server
+Write-Host '🐘 Iniciando servidor Laravel...' -ForegroundColor Cyan
+Set-Location \$projectPath
+
+# Check if Laravel is already running
+try {
+    \$response = Invoke-WebRequest -Uri 'http://127.0.0.1:8000' -TimeoutSec 2 -UseBasicParsing -ErrorAction Stop
+    Write-Host '✅ Servidor Laravel ya está ejecutándose' -ForegroundColor Green
+} catch {
+    # Start Laravel server in background
+    \$laravelJob = Start-Job -ScriptBlock {
+        Set-Location 'C:\\xampp\\htdocs\\betoge'
+        php artisan serve --host=127.0.0.1 --port=8000
+    }
+    Write-Host '🔄 Iniciando servidor Laravel...' -ForegroundColor Yellow
+    
+    # Wait for Laravel to be ready
+    if (-not (Wait-ForService 'Laravel Server' 'php' 'http://127.0.0.1:8000' 20)) {
+        Write-Host '❌ Error: Laravel no pudo iniciarse correctamente' -ForegroundColor Red
+        Stop-Job \$laravelJob -ErrorAction SilentlyContinue
+        Remove-Job \$laravelJob -ErrorAction SilentlyContinue
+        exit 1
+    }
+}
+
+Write-Host ''
+
+# Start Vite server
+Write-Host '⚡ Verificando Vite...' -ForegroundColor Cyan
+if (Test-Path 'package.json') {
+    try {
+        \$response = Invoke-WebRequest -Uri 'http://localhost:5173' -TimeoutSec 2 -UseBasicParsing -ErrorAction Stop
+        Write-Host '✅ Servidor Vite ya está ejecutándose' -ForegroundColor Green
+    } catch {
+        # Start Vite server in background
+        \$viteJob = Start-Job -ScriptBlock {
+            Set-Location 'C:\\xampp\\htdocs\\betoge'
+            npm run dev
+        }
+        Write-Host '🔄 Iniciando servidor Vite...' -ForegroundColor Yellow
+        
+        # Wait for Vite to be ready (optional, continue if fails)
+        Wait-ForService 'Vite Server' 'node' 'http://localhost:5173' 15 | Out-Null
+    }
+} else {
+    Write-Host '⚠️  No se encontró package.json, saltando Vite' -ForegroundColor Yellow
+}
+
+Write-Host ''
+
+# Final verification before opening browser
+Write-Host '🔍 Verificación final de servicios...' -ForegroundColor Cyan
+
+try {
+    \$laravelResponse = Invoke-WebRequest -Uri 'http://127.0.0.1:8000' -TimeoutSec 5 -UseBasicParsing -ErrorAction Stop
+    if (\$laravelResponse.StatusCode -eq 200) {
+        Write-Host '✅ Laravel está respondiendo correctamente' -ForegroundColor Green
+        
+        # Open Chrome only if Laravel is working
+        Write-Host '🌐 Abriendo proyecto en Chrome...' -ForegroundColor Cyan
+        Start-Sleep 2
+        
+        try {
+            Start-Process 'chrome.exe' 'http://127.0.0.1:8000' -ErrorAction Stop
+            Write-Host '✅ Chrome abierto con el proyecto' -ForegroundColor Green
+        } catch {
+            # Try alternative Chrome paths
+            try {
+                Start-Process 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe' 'http://127.0.0.1:8000' -ErrorAction Stop
+                Write-Host '✅ Chrome abierto con el proyecto' -ForegroundColor Green
+            } catch {
+                Write-Host '⚠️  No se pudo abrir Chrome automáticamente' -ForegroundColor Yellow
+                Write-Host '   👉 Abre manualmente: http://127.0.0.1:8000' -ForegroundColor Cyan
+            }
+        }
+        
+        Write-Host ''
+        Write-Host '🎉 ¡Entorno de desarrollo iniciado correctamente!' -ForegroundColor Green
+        Write-Host '🌐 Laravel: http://127.0.0.1:8000' -ForegroundColor Cyan
+        Write-Host '⚡ Vite: http://localhost:5173' -ForegroundColor Cyan
+        Write-Host '🗄️  phpMyAdmin: http://localhost/phpmyadmin' -ForegroundColor Cyan
+        Write-Host ''
+        Write-Host '💡 Para detener los servicios usa: /dev-stop' -ForegroundColor Yellow
+        
+    } else {
+        Write-Host '❌ Laravel no está respondiendo correctamente' -ForegroundColor Red
+        Write-Host '   Código de respuesta: ' \$laravelResponse.StatusCode -ForegroundColor Red
+    }
+} catch {
+    Write-Host '❌ Error: Laravel no está disponible en http://127.0.0.1:8000' -ForegroundColor Red
+    Write-Host '   Error: ' \$_.Exception.Message -ForegroundColor Red
+    Write-Host '   👉 Verifica manualmente el estado del servidor' -ForegroundColor Yellow
+}
+"
+```
+
+✅ **Betoge development environment started!**
+
+🎉 All services are running:
+- 🌐 **Laravel**: http://127.0.0.1:8000  
+- ⚡ **Vite**: http://localhost:5173
+- 🗄️ **phpMyAdmin**: http://localhost/phpmyadmin

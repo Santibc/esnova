@@ -1,0 +1,49 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f8f8f8"/>
+
+  <!-- Header -->
+  <rect width="800" height="80" fill="#ffffff"/>
+  <rect x="20" y="25" width="120" height="30" rx="4" fill="#000000"/>
+  <text x="400" y="50" font-family="Arial, sans-serif" font-size="14" fill="#666" text-anchor="middle">TEMPLATE LIMA</text>
+
+  <!-- Navigation -->
+  <rect y="80" width="800" height="40" fill="#f0f0f0"/>
+  <rect x="250" y="90" width="80" height="20" rx="2" fill="#000000" opacity="0.1"/>
+  <rect x="350" y="90" width="80" height="20" rx="2" fill="#000000" opacity="0.1"/>
+  <rect x="450" y="90" width="80" height="20" rx="2" fill="#000000" opacity="0.1"/>
+
+  <!-- Hero Slider -->
+  <rect y="140" width="800" height="200" fill="#e0e0e0"/>
+  <text x="400" y="250" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#000" text-anchor="middle">HERO SLIDER</text>
+
+  <!-- Products Grid -->
+  <g transform="translate(50, 360)">
+    <!-- Product 1 -->
+    <rect width="160" height="180" rx="4" fill="#ffffff" stroke="#e0e0e0"/>
+    <rect x="10" y="10" width="140" height="140" rx="2" fill="#f0f0f0"/>
+    <rect x="10" y="155" width="100" height="10" rx="2" fill="#e0e0e0"/>
+
+    <!-- Product 2 -->
+    <rect x="190" width="160" height="180" rx="4" fill="#ffffff" stroke="#e0e0e0"/>
+    <rect x="200" y="10" width="140" height="140" rx="2" fill="#f0f0f0"/>
+    <rect x="200" y="155" width="100" height="10" rx="2" fill="#e0e0e0"/>
+
+    <!-- Product 3 -->
+    <rect x="380" width="160" height="180" rx="4" fill="#ffffff" stroke="#e0e0e0"/>
+    <rect x="390" y="10" width="140" height="140" rx="2" fill="#f0f0f0"/>
+    <rect x="390" y="155" width="100" height="10" rx="2" fill="#e0e0e0"/>
+
+    <!-- Product 4 -->
+    <rect x="570" width="160" height="180" rx="4" fill="#ffffff" stroke="#e0e0e0"/>
+    <rect x="580" y="10" width="140" height="140" rx="2" fill="#f0f0f0"/>
+    <rect x="580" y="155" width="100" height="10" rx="2" fill="#e0e0e0"/>
+  </g>
+
+  <!-- Design accent -->
+  <circle cx="750" cy="550" r="30" fill="#ff6b6b" opacity="0.3"/>
+
+  <!-- Template name -->
+  <text x="400" y="580" font-family="'Lexend Exa', Arial, sans-serif" font-size="16" font-weight="bold" fill="#000" text-anchor="middle">Template Lima</text>
+  <text x="400" y="595" font-family="'Lexend', Arial, sans-serif" font-size="11" fill="#666" text-anchor="middle">Moderno • Sticky Header • Swiper Sliders</text>
+</svg>

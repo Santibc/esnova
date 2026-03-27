@@ -1,0 +1,108 @@
+<header class="js-head-main head-main head-colors position-sticky position-sticky-md head-logo-center head-logo-md-center head-md-hamburger transition-soft" data-store="head" style="top: 0px;">
+                                        
+        <div class="head-logo-row position-relative transition-soft">
+        <div class="container-fluid">
+            <div class=" row no-gutters align-items-center">
+
+                
+                <div class="order-first col-3 order-md-first  col-md-auto col-utility ">
+                    
+	<span class="utilities-container d-inline-block">
+		<a href="#" class="js-modal-open utilities-item btn btn-utility pl-0 pl-md-0" data-toggle="#nav-hamburger" aria-label="Menú" data-component="menu-button">
+			<span class="utilities-text">Menú</span>
+		</a>
+	</span>
+                </div>
+
+                
+                <div class="js-logo-container col text-center col-md order-md-1 text-md-center ">
+                    
+    
+<div id="logo" class="logo-img-container ">
+    <a href="https://baires-theme.mitiendanube.com" title=""><img src="//dcdn-us.mitiendanube.com/stores/003/928/529/themes/common/logo-669113612-1699451690-3acd50bab5b1a3093eaa9afbd2a2f5a81699451690-480-0.webp" alt="baires-skate" class="logo-img transition-soft logo-img-small" width="573" height="132"></a>
+            <h1 style="display: none;">baires-skate</h1>
+    </div>
+
+                </div>
+
+                
+                
+                
+                <div class="js-utility-col js-search-utility col-auto desktop-utility-col col-md-3 mr-md-3 col-utility  order-md-0" style="visibility: visible; height: auto;">
+                                                                <span class="d-none d-md-inline-block ">
+                            
+	<span class="utilities-container d-inline-block">
+		<a href="#" class="js-search-button js-modal-open js-fullscreen-modal-open btn btn-utility utilities-item " data-modal-url="modal-fullscreen-search" data-toggle="#nav-search" aria-label="Buscador">
+			<span class="utilities-text">Buscar</span>
+		</a>
+	</span>
+                        </span>
+                                    </div>
+
+                
+                
+                                
+                <div class="js-utility-col col-utility desktop-utility-col text-right d-none d-md-inline-block order-md-1 col-md-3" style="visibility: visible; height: auto;">
+                    
+	<span class="utilities-container text-transform">
+					<a href="/account/login/" class="btn btn-utility">
+				<span class="utilities-text">
+											Login
+									</span>
+			</a>
+			</span>
+                </div>
+
+                
+                <div class="js-utility-col col-auto col-utility desktop-utility-col order-last" style="visibility: visible; height: auto;">
+                    
+	<span class="utilities-container d-inline-block">
+		<div id="ajax-cart" class="cart-summary" data-component="cart-button">
+			<a href="#" data-toggle="#modal-cart" data-modal-url="modal-fullscreen-cart" class="js-modal-open js-fullscreen-modal-open btn btn-utility d-flex pr-0">
+				<span class="utilities-text">Carrito</span>
+				<span class="js-cart-widget-amount badge">0</span>
+			</a>	
+		</div>
+	</span>
+                </div>
+
+                
+                                                                
+
+    
+
+<div class="js-alert-added-to-cart notification-floating notification-cart-container notification-hidden notification-fixed position-absolute" style="display: none;">
+	<div class="notification notification-primary notification-cart p-0">
+					<div class="js-cart-notification-close notification-close">
+				<svg class="icon-inline icon-2x notification-icon"><use xlink:href="#times"></use></svg>
+			</div>
+				<div class="js-cart-notification-item row no-gutters align-items-center" data-store="cart-notification-item">
+			<div class="col-auto pr-0 notification-img">
+				<img src="" class="js-cart-notification-item-img img-absolute-centered-vertically">
+			</div>
+			<div class="col text-left pl-3 pr-4">
+				<div class="mb-1 mr-2 text-transform font-weight-bold">
+					<span class="js-cart-notification-item-name"></span>
+					<span class="js-cart-notification-item-variant-container" style="display: none;">
+						(<span class="js-cart-notification-item-variant"></span>)
+					</span>
+				</div>
+				<div class="mb-1">
+					<span class="js-cart-notification-item-quantity"></span>
+					<span> x </span>
+					<span class="js-cart-notification-item-price"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+
+                                    
+            </div>
+        </div>
+    </div>   
+
+    
+    
+     
+</header>

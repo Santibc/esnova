@@ -1,0 +1,2122 @@
+        
+        
+        
+        
+        <script type="text/javascript" src="//dcdn-us.mitiendanube.com/stores/003/928/529/themes/baires/dart-external-no-dependencies-2020a4748d2e0fc983451e7972c49502.js"></script>
+
+        <script type="text/javascript">
+
+            
+            LS.ready.then(function(){
+
+                
+                
+
+
+                
+                
+
+// Move to our_content
+window.urls = {
+    "shippingUrl": "\/envio\/"
+}
+
+
+document.addEventListener('lazybeforeunveil', function(e){
+    if ((e.target.parentElement) && (e.target.nextElementSibling)) {
+        var parent = e.target.parentElement;
+        var sibling = e.target.nextElementSibling;
+        if (sibling.classList.contains('js-lazy-loading-preloader')) {
+            sibling.style.display = 'none';
+            parent.style.display = 'block';
+        }
+    }
+});
+
+
+window.lazySizesConfig = window.lazySizesConfig || {};
+lazySizesConfig.hFac = 0.4;
+
+
+DOMContentLoaded.addEventOrExecute(() => {
+
+	
+    
+    jQueryNuvem(".js-notification-close, .js-tooltip-close").on( "click", function(e) {
+        e.preventDefault();
+        jQueryNuvem(e.currentTarget).closest(".js-notification, .js-tooltip").hide();
+    });
+
+    
+    jQueryNuvem(document).on("click", ".js-tooltip-open", function(e) {
+        e.preventDefault();
+        jQueryNuvem(this).next(".js-tooltip").show();
+    });
+
+    
+    var $notification_status_page = jQueryNuvem(".js-notification-status-page");
+    var $fixed_bottom_button = jQueryNuvem(".js-btn-fixed-bottom");
+    var head_height = jQueryNuvem(".js-head-main").height();
+    
+	    
+    if ($notification_status_page.length > 0){
+        if (LS.shouldShowOrderStatusNotification($notification_status_page.data('url'))){
+
+            $notification_status_page.css("top" , head_height + 15 + "px");
+            $notification_status_page.show();
+        };
+        jQueryNuvem(".js-notification-status-page-close").on( "click", function(e) {
+            e.preventDefault();
+            LS.dontShowOrderStatusNotificationAgain($notification_status_page.data('url'));
+        });
+    }
+
+    
+    jQueryNuvem(".js-cart-notification-close").on("click", function(){
+        jQueryNuvem(".js-alert-added-to-cart").removeClass("notification-visible").addClass("notification-hidden");
+        setTimeout(function(){
+            jQueryNuvem('.js-cart-notification-item-img').attr('src', '');
+            jQueryNuvem(".js-alert-added-to-cart").hide();
+        },2000);
+    });
+
+    
+    
+        
+        restoreNotifications = function(){
+
+            // Whatsapp button position
+            $fixed_bottom_button.css("marginBottom", "0");
+
+        };
+
+        if (!window.cookieNotificationService.isAcknowledged()) {
+            jQueryNuvem(".js-notification-cookie-banner").show();
+
+            const cookieBannerHeight = jQueryNuvem(".js-notification-cookie-banner").outerHeight();
+            
+            if (window.innerWidth < 768) {
+                
+                
+                $fixed_bottom_button.css("marginBottom", cookieBannerHeight + 10 + "px");
+            }
+
+        }
+
+        jQueryNuvem(".js-acknowledge-cookies").on( "click", function(e) {
+            window.cookieNotificationService.acknowledge();
+            restoreNotifications();
+        });
+
+    
+    
+    
+        restoreQuickshopForm = function(){
+
+            
+            
+            jQueryNuvem("#quickshop-modal .js-item-product").removeClass("js-swiper-slide-visible js-item-slide");
+            jQueryNuvem("#quickshop-modal .js-quickshop-container").attr( { 'data-variants' : '' , 'data-quickshop-id': '' } );
+            jQueryNuvem("#quickshop-modal .js-item-product").attr('data-product-id', '');
+
+                        
+            setTimeout(function(){
+                var $quickshop_form = jQueryNuvem("#quickshop-form").find('.js-product-form');
+                var $item_form_container = jQueryNuvem(".js-quickshop-opened").find(".js-item-variants");
+                
+                $quickshop_form.detach().appendTo($item_form_container);
+                jQueryNuvem(".js-quickshop-opened").removeClass("js-quickshop-opened");
+                jQueryNuvem("#quickshop-modal .js-quickshop-img").attr('srcset', '');
+                jQueryNuvem("#quickshop-form").removeAttr("style");
+            },350);
+
+        };
+
+    
+    
+    resetSearchBox = function(){
+
+                
+        jQueryNuvem(".js-search-input").val("");
+        jQueryNuvem(".js-search-form-suggestions").hide();
+
+        const empty_search = jQueryNuvem(".js-empty-search");
+        const empty_submit = jQueryNuvem(".js-search-input-submit");
+
+        empty_search.fadeOut(100);
+        empty_submit.fadeIn(100);
+
+    };
+
+    
+    if (window.innerWidth < 768) {
+
+        
+        cleanURLHash = function(){
+            const uri = window.location.toString();
+            const clean_uri = uri.substring(0, uri.indexOf("#"));
+            window.history.replaceState({}, document.title, clean_uri);
+        };
+
+        
+        goBackBrowser = function(){
+            cleanURLHash();
+            history.back();
+        };
+
+        
+        if(window.location.href.indexOf("modal-fullscreen") > -1) {
+            cleanURLHash();
+        }
+
+        
+        jQueryNuvem(document).on("click", ".js-fullscreen-modal-open", function(e) {
+            e.preventDefault();
+            var modal_url_hash = jQueryNuvem(this).data("modalUrl");
+            window.location.hash = modal_url_hash;
+        });
+
+        
+        jQueryNuvem(document).on("click", ".js-fullscreen-modal-close", function(e) {
+            e.preventDefault();
+            goBackBrowser();
+        });
+
+        
+        window.onhashchange = function() {
+            if(window.location.href.indexOf("modal-fullscreen") <= -1) {
+
+                
+                if(jQueryNuvem(".js-fullscreen-modal").hasClass("modal-show")){
+
+                    
+                    if(jQueryNuvem(".js-modal.modal-show").length == 1){
+                        jQueryNuvem("body").removeClass("overflow-none");
+                    }
+                    var $opened_modal = jQueryNuvem(".js-fullscreen-modal.modal-show");
+                    var $opened_modal_overlay = $opened_modal.prev();
+
+                    $opened_modal.removeClass("modal-show");
+                    setTimeout(() => $opened_modal.hide(), 500);
+                    $opened_modal_overlay.fadeOut(500);
+
+                            
+                    resetSearchBox();
+
+                                            restoreQuickshopForm();
+                    
+                }
+            }
+        }
+
+    }
+
+    modalOpen = function(modal_id, openType){
+        var $overlay_id = jQueryNuvem('.js-modal-overlay[data-modal-id="' + modal_id + '"]');
+
+        if (jQueryNuvem(modal_id).hasClass("modal-show")) {
+                        if(jQueryNuvem(".js-modal.modal-show").length == 1){
+                jQueryNuvem("body").removeClass("overflow-none");
+            }
+            let modal = jQueryNuvem(modal_id).removeClass("modal-show");
+            setTimeout(() => modal.hide(), 500);
+        } else {
+
+                        
+            if(!jQueryNuvem(".js-modal.modal-show").length){
+                jQueryNuvem("body").addClass("overflow-none move-right");
+            }
+
+            jQueryNuvem(modal_id).detach().appendTo("body");
+            jQueryNuvem(modal_id).show().addClass("modal-show");
+            
+                        if (((jQueryNuvem(modal_id).hasClass("js-modal-overlay-md")) && (window.innerWidth > 768)) || (!jQueryNuvem(modal_id).hasClass("js-modal-overlay-md"))) {
+                $overlay_id.fadeIn(400);
+                $overlay_id.detach().insertBefore(modal_id);
+            }
+        }
+
+        
+        if(openType == 'openFullScreenWithoutClick' && window.innerWidth < 768 && jQueryNuvem(modal_id).hasClass("js-fullscreen-modal")){
+            var modal_url_hash = jQueryNuvem(modal_id).data("modalUrl");
+            window.location.hash = modal_url_hash;
+        }
+    }
+
+    jQueryNuvem(document).on("click", ".js-modal-open", function(e) {
+        e.preventDefault(); 
+        var modal_id = jQueryNuvem(this).data('toggle');
+        modalOpen(modal_id);   
+    });
+
+    jQueryNuvem(document).on("click", ".js-modal-close", function(e) {
+        e.preventDefault();
+
+        
+        if(jQueryNuvem(".js-modal.modal-show").length == 1){
+            jQueryNuvem("body").removeClass("overflow-none");
+        }
+        var $modal = jQueryNuvem(this).closest(".js-modal");
+        var modal_id = $modal.attr('id');
+        var $overlay_id = jQueryNuvem('.js-modal-overlay[data-modal-id="#' + modal_id + '"]');
+        $modal.removeClass("modal-show");
+        setTimeout(() => $modal.hide(), 500);
+        $overlay_id.fadeOut(500);
+        
+        
+        if ((window.innerWidth < 768) && (jQueryNuvem(this).hasClass(".js-fullscreen-modal-close"))) {
+            goBackBrowser();
+        }
+
+        
+        resetSearchBox();
+
+                    restoreQuickshopForm();
+        
+    });
+
+    jQueryNuvem(document).on("click", ".js-modal-overlay", function(e) {
+        e.preventDefault();
+
+        
+        if(jQueryNuvem(".js-modal.modal-show").length == 1){
+            jQueryNuvem("body").removeClass("overflow-none");
+        }
+
+        var modal_id = jQueryNuvem(this).data('modalId');
+        let modal = jQueryNuvem(modal_id).removeClass("modal-show");
+        setTimeout(() => modal.hide(), 500);
+        jQueryNuvem(this).fadeOut(500);
+
+                
+        resetSearchBox();
+
+                    restoreQuickshopForm();
+        
+    });
+
+    
+        jQueryNuvem(document).on("click", ".js-card-collapse-toggle", function(e) {
+        e.preventDefault();
+        var parent = jQueryNuvem(this).closest(".js-card-collapse");
+        parent.find(".js-card-collapse-icon").toggle();
+        parent.toggleClass('active');
+    });
+
+    
+    const inViewport = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.observed) {
+          entry.target.classList.add("is-inViewport");
+          entry.target.observed = true;
+        }
+      });
+    };
+
+    // Attach observer to every [data-transition] element:
+    const ELs_inViewport = document.querySelectorAll('[data-transition]');
+    ELs_inViewport.forEach(EL => {
+      EL.observed = false; // Initialize the observed flag for each element
+      const Obs = new IntersectionObserver(inViewport);
+      Obs.observe(EL);
+    });
+
+    applyMarqueeAnimation = function(marqueeSelector, textSelector, textDirection){
+
+        
+        var defaultDelay = 5;
+        var defaultWidth = 300;
+
+                var animatedWidth = jQueryNuvem(textSelector).first(el => el.offsetWidth);
+        var newDelay = defaultDelay*(animatedWidth/defaultWidth)*1.5;
+
+        if((window.innerWidth > 768) && (newDelay < 60)){
+
+                        var newDelay = newDelay + 20;
+        }
+
+        var animationDirection = textDirection === 'reverse' ? "reverse" : "normal";
+
+        jQueryNuvem(marqueeSelector).css("animation", "marquee " + newDelay + "s linear infinite " + animationDirection);
+    };
+
+    
+        
+        jQueryNuvem('.js-home-message-animated').each(function(el) {
+            var textContainer = jQueryNuvem(el).find(".js-home-message-text-container");
+            applyMarqueeAnimation(el , textContainer);
+        });
+
+        jQueryNuvem('.js-home-message-animated-reverse').each(function(el) {
+            var textReverseContainer = jQueryNuvem(el).find(".js-home-message-text-container-reverse");
+            applyMarqueeAnimation(el, textReverseContainer, "reverse");
+        });
+
+    
+	
+    
+                        
+    
+        
+            
+            applyMarqueeAnimation(".js-adbar-animated" , ".js-adbar-text-container");
+
+        
+    
+    
+
+    
+    var $category_controls = jQueryNuvem(".js-category-controls");
+
+    
+    
+    jQueryNuvem(".js-toggle-menu-panel").click(function (e) {
+        e.preventDefault();
+        jQueryNuvem(this).next(".js-menu-panel").show().addClass("nav-list-panel-show");
+    });
+
+    jQueryNuvem(".js-toggle-menu-back").click(function (e) {
+        e.preventDefault();
+        var $panel_to_change = jQueryNuvem(this).closest(".js-menu-panel");
+        $panel_to_change.removeClass("nav-list-panel-show");
+         setTimeout(function(){
+            $panel_to_change.hide();
+        },600);
+    });
+
+    closeHamburgerSubpanels = function() {
+        jQueryNuvem("#nav-hamburger").addClass("modal-transition-fast");
+        jQueryNuvem(".js-menu-panel").removeClass("nav-list-panel-show");
+        
+         setTimeout(function(){
+            jQueryNuvem(".js-menu-panel").hide();
+            jQueryNuvem("#nav-hamburger").removeClass("modal-transition-fast");
+        },1000);
+    };
+
+    jQueryNuvem(".js-toggle-menu-close, .js-modal-overlay[data-modal-id='#nav-hamburger'").click(function () {
+        closeHamburgerSubpanels();
+    });
+
+    
+    var win_height = window.innerHeight;
+    const logoContainer = jQueryNuvem('.js-logo-container');
+
+    jQueryNuvem(".js-desktop-dropdown").css('maxHeight', (win_height - head_height - 50).toString() + 'px');
+
+    jQueryNuvem(".js-item-subitems-desktop").on("mouseenter", function (e) {
+        jQueryNuvem(e.currentTarget).addClass("active");
+    }).on("mouseleave", function(e) {
+        jQueryNuvem(e.currentTarget).removeClass("active");
+    });
+
+    jQueryNuvem(".js-nav-main-item").on("mouseenter", function (e) {
+        jQueryNuvem('.js-nav-desktop-list').children(".selected").removeClass("selected");
+        jQueryNuvem(e.currentTarget).addClass("selected");
+    }).on("mouseleave", function(e) {
+        const self = jQueryNuvem(this);
+        setTimeout(function(){
+            self.removeClass("selected");
+        },500);
+    });
+
+    jQueryNuvem(".js-nav-desktop-list-arrow").on("mouseenter", function (e) {
+        jQueryNuvem('.js-desktop-nav-item').removeClass("selected");
+    });
+
+     
+    
+    const menuContainer = jQueryNuvem('.js-nav-desktop-list').first(el => el.offsetWidth);
+    const logoColWidth = logoContainer.first(el => el.offsetWidth);
+    let utilityColWidth = 0;
+    
+    jQueryNuvem('.js-utility-col').each(function(el) {
+        utilityColWidth +=  jQueryNuvem(el).first(el => el.offsetWidth);
+    });
+
+    const totalColsWidth = logoColWidth + utilityColWidth;
+
+    
+    let menuItems = 0;
+
+    jQueryNuvem('.js-nav-desktop-list > .js-desktop-nav-item').each(function(el) {
+        menuItems +=  jQueryNuvem(el).first(el => el.offsetWidth);
+    });
+
+    jQueryNuvem(".js-nav-desktop-list").on("scroll", function() {
+        var position = jQueryNuvem('.js-nav-desktop-list').prop("scrollLeft");
+        if(position == 0) {
+            jQueryNuvem(".js-nav-desktop-list-arrow-left").addClass('disable');
+        } else {
+            jQueryNuvem(".js-nav-desktop-list-arrow-left").removeClass('disable');
+        }
+        if(position == ( menuItems - menuContainer )) {
+            jQueryNuvem(".js-nav-desktop-list-arrow-right").addClass('disable');
+        } else {
+            jQueryNuvem(".js-nav-desktop-list-arrow-right").removeClass('disable');
+        }
+    });
+
+        
+    if (menuContainer < menuItems) {
+        jQueryNuvem('.js-nav-desktop-list').addClass('nav-desktop-with-scroll');
+        jQueryNuvem('.js-nav-desktop-list-arrow').show();
+            }
+
+    setTimeout(function(){
+        jQueryNuvem(".js-desktop-nav-col, .js-utility-col").css("visibility", "visible").css("height", "auto");
+    },200);
+
+    
+    jQueryNuvem(".js-menu-and-banners-row").css("visibility" , "visible").css("height" , "auto").css("overflow" , "initial");
+
+    jQueryNuvem('.js-nav-desktop-list-arrow-right').on("click", function() {
+        var posL = jQueryNuvem('.js-nav-desktop-list').prop("scrollLeft") + 400;
+        jQueryNuvem('.js-nav-desktop-list').each((el) => el.scroll({ left: posL, behavior: 'smooth' }));
+    });
+    jQueryNuvem('.js-nav-desktop-list-arrow-left').on("click", function() {
+        var posR = jQueryNuvem('.js-nav-desktop-list').prop("scrollLeft") - 400;
+        jQueryNuvem('.js-nav-desktop-list').each((el) => el.scroll({ left: posR, behavior: 'smooth' }));
+    });
+
+    
+            jQueryNuvem(".js-search-button").on("click", function (e) {
+            var searchBox = jQueryNuvem(".js-search-utility").find(".js-search-form");
+            searchBox.addClass("expanded");
+        });
+    
+    
+    jQueryNuvem(".js-desktop-dropdown").on("mouseleave", function (e) {
+        const self = jQueryNuvem(this);
+        self.css("pointer-events" , "none");
+        setTimeout(function(){
+            self.css("pointer-events" , "initial");
+        },1000);
+    });
+
+    
+    const search_input = jQueryNuvem(".js-search-input");
+
+    jQueryNuvem(".js-search-button").on("click", function (e) {
+        setTimeout(function(){
+            search_input.val('').each(el => el.focus());
+        },10);
+    });
+
+    
+     
+
+    
+    
+        
+        var didScroll;
+        var lastScrollTop = 0;
+        var delta = 30;
+        var navbarHeight = jQueryNuvem(".js-head-main").outerHeight();
+        var topbarHeight = jQueryNuvem(".js-adbar").outerHeight();
+
+        window.addEventListener("scroll", function(event){
+            didScroll = true;
+        });
+
+        setInterval(function() {
+            if (didScroll) {
+                hasScrolled();
+                didScroll = false;
+            }
+        }, 250);
+
+        function hasScrolled() {
+            var st = window.pageYOffset;
+            
+            // Make sure they scroll more than delta
+            if(Math.abs(lastScrollTop - st) <= delta)
+                return;
+            
+            // If they scrolled down and are past the navbar, add class .compress.
+            if (st > lastScrollTop && st > navbarHeight){
+                jQueryNuvem(".js-head-main").addClass('compress').css('top', (- topbarHeight).toString() + 'px' );
+                            } else {
+                // Scroll Up
+                let documentHeight = Math.max(
+                    document.body.scrollHeight,
+                    document.body.offsetHeight,
+                    document.documentElement.clientHeight,
+                    document.documentElement.scrollHeight,
+                    document.documentElement.offsetHeight
+                );
+
+                if(st + window.innerHeight < documentHeight) {
+                    jQueryNuvem(".js-head-main").removeClass('compress').css('top', "0px" );
+                                    }
+            }
+
+            lastScrollTop = st;
+        }
+        
+     
+
+
+    
+
+    changeLang = function(element) {
+        var selected_country_url = element.find("option").filter((el) => el.selected).attr("data-country-url");
+        location.href = selected_country_url;
+    };
+
+    jQueryNuvem('.js-lang-select').on("change", function (e) {
+        lang_select_option = jQueryNuvem(this);
+
+        changeLang(lang_select_option);
+    });
+
+	
+            var slidesPerViewDesktopVal = 4;
+    var slidesPerViewMobileVal = 2;
+    var itemSwiperSpaceBetween = 15;
+
+    
+    hideSwiperControls = function(elemPrev, elemNext) {
+        if((jQueryNuvem(elemPrev).hasClass("swiper-button-disabled") && jQueryNuvem(elemNext).hasClass("swiper-button-disabled"))){
+            jQueryNuvem(elemPrev).remove();
+            jQueryNuvem(elemNext).remove();
+        }
+    };
+
+	
+		
+
+        var width = window.innerWidth;
+        if (width > 767) {
+            var slider_autoplay = {delay: 6000,};
+        } else {
+            var slider_autoplay = false;
+        }
+
+        window.homeSlider = {
+            getAutoRotation: function() {
+                return slider_autoplay;
+            },
+            updateSlides: function(slides) {
+                homeSwiper.removeAllSlides();
+                slides.forEach(function(aSlide, index){
+                    homeSwiper.appendSlide(
+                        '<div class="swiper-slide slide-container ' + aSlide.color + '">' +
+                            (aSlide.link ? '<a href="' + aSlide.link + '">' : '' ) +
+                                '<img src="' + aSlide.src + '" class="slider-image"/>' +
+                                '<div class="swiper-text swiper-text-' + aSlide.color + '">' +
+                                    (aSlide.description || aSlide.title ? '<div class="mb-1 mb-md-2">' + (index + 1) + '/' + slides.length + '</div>' : '' ) +
+                                    (aSlide.title ? '<div class="h1-huge h1-huge-md mb-2 mb-md-3">' + aSlide.title + '</div>' : '' ) +
+                                    (aSlide.description ? '<p class="mb-2 mb-md-3">' + aSlide.description + '</p>' : '' ) +
+                                    (aSlide.button && aSlide.link ? '<div class="btn btn-link d-inline-block mb-2 mb-md-3">' + aSlide.button + '</div>' : '' ) +
+                                '</div>' +
+                            (aSlide.link ? '</a>' : '' ) +
+                        '</div>'
+                    );
+                });
+
+                
+                if(!slides.length){
+                    jQueryNuvem(".js-home-main-slider-container").addClass("hidden");
+                    jQueryNuvem(".js-home-empty-slider-container").removeClass("hidden");
+                    jQueryNuvem(".js-home-mobile-slider-visibility").removeClass("d-md-none");
+                                            jQueryNuvem(".js-home-main-slider-visibility").removeClass("d-none d-md-block");
+                        homeMobileSwiper.update();
+                                    }else{
+                    jQueryNuvem(".js-home-main-slider-container").removeClass("hidden");
+                    jQueryNuvem(".js-home-empty-slider-container").addClass("hidden");
+                    jQueryNuvem(".js-home-mobile-slider-visibility").addClass("d-md-none");
+                                            jQueryNuvem(".js-home-main-slider-visibility").addClass("d-none d-md-block");
+                                    }
+            },
+            changeAutoRotation: function(){
+
+            },
+        };
+
+        var preloadImagesValue = false;
+        var lazyValue = true;
+        var loopValue = true;
+        var paginationClickableValue = true;
+
+        function arrowsColor() {
+            if(jQueryNuvem(".js-home-slider").find('.swiper-slide-active').hasClass("swiper-light")){
+                jQueryNuvem(".js-home-slider").addClass("swiper-arrows-light");
+            } else {
+                jQueryNuvem(".js-home-slider").removeClass("swiper-arrows-light");
+            }
+        }
+
+        var homeSwiper = null;
+        createSwiper(
+            '.js-home-slider', {
+                preloadImages: preloadImagesValue,
+                lazy: lazyValue,
+                                autoplay: slider_autoplay,
+                navigation: {
+                    nextEl: '.js-swiper-home-next',
+                    prevEl: '.js-swiper-home-prev',
+                },
+                on: {
+                  init: arrowsColor,
+                  slideChangeTransitionEnd: arrowsColor,
+                },
+            },
+            function(swiperInstance) {
+                homeSwiper = swiperInstance;
+            }
+        );
+
+        function arrowsMobileColor() {
+            if(jQueryNuvem(".js-home-slider-mobile").find('.swiper-slide-active').hasClass("swiper-light")){
+                jQueryNuvem(".js-home-slider-mobile").addClass("swiper-arrows-light");
+            } else {
+                jQueryNuvem(".js-home-slider-mobile").removeClass("swiper-arrows-light");
+            }
+        }
+
+        var homeMobileSwiper = null;
+        createSwiper(
+            '.js-home-slider-mobile', {
+                preloadImages: preloadImagesValue,
+                lazy: lazyValue,
+                                autoplay: slider_autoplay,
+                navigation: {
+                    nextEl: '.js-swiper-home-next-mobile',
+                    prevEl: '.js-swiper-home-prev-mobile',
+                },
+                on: {
+                  init: arrowsMobileColor,
+                  slideChangeTransitionEnd: arrowsMobileColor,
+                },
+            },
+            function(swiperInstance) {
+                homeMobileSwiper = swiperInstance;
+            }
+        );
+
+                    jQueryNuvem('.js-swiper-home .swiper-wrapper').addClass( "disabled" );
+            jQueryNuvem('.js-swiper-home-pagination, .js-swiper-home-prev, .js-swiper-home-next').remove();
+        
+                    jQueryNuvem('.js-swiper-home-pagination-mobile, .js-swiper-home-prev-mobile, .js-swiper-home-next-mobile').remove();
+        
+        
+                        
+        
+            var lazyVal = true;
+            var watchOverflowVal = true;
+            var centerInsufficientSlidesVal = true;
+
+            
+                                                                                                var slidesPerViewFeaturedDesktopVal = 3;
+                var slidesPerViewFeaturedMobileVal = 1;
+
+                                    window.swiperLoader('.js-swiper-featured', {
+                        lazy: lazyVal,
+                        watchOverflow: watchOverflowVal,
+                        centerInsufficientSlides: centerInsufficientSlidesVal,
+                        threshold: 5,
+                        watchSlideProgress: true,
+                        watchSlidesVisibility: true,
+                        slideVisibleClass: 'js-swiper-slide-visible',
+                        spaceBetween: itemSwiperSpaceBetween,
+                                            navigation: {
+                            nextEl: '.js-swiper-featured-next',
+                            prevEl: '.js-swiper-featured-prev',
+                        },
+                        pagination: {
+                            el: '.js-swiper-featured-pagination',
+                            type: 'fraction',
+                        },
+                        on: {
+                            afterInit: function () {
+                                hideSwiperControls(".js-swiper-featured-prev", ".js-swiper-featured-next");
+                            },
+                        },
+                        slidesPerView: slidesPerViewFeaturedMobileVal,
+                                            breakpoints: {
+                            768: {
+                                slidesPerView: slidesPerViewFeaturedDesktopVal,
+                            }
+                        }
+                                        });
+                
+            
+            
+            
+        
+        
+        window.swiperLoader('.js-swiper-featured-demo', {
+            lazy: true,
+            loop: true,
+            watchOverflow: true,
+            spaceBetween: itemSwiperSpaceBetween,
+            slidesPerView: slidesPerViewMobileVal,
+            navigation: {
+                nextEl: '.js-swiper-featured-demo-next',
+                prevEl: '.js-swiper-featured-demo-prev',
+            },
+            pagination: {
+                el: '.js-swiper-featured-demo-pagination',
+                type: 'fraction',
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 3,
+                }
+            }
+        });
+
+        
+        createSwiper('.js-swiper-categories-demo', {
+            watchOverflow: true,
+            watchSlidesVisibility : true,
+            slidesPerView: 'auto',
+            spaceBetween: 20,
+            navigation: {
+                nextEl: '.js-swiper-categories-next-demo',
+                prevEl: '.js-swiper-categories-prev-demo',
+            },
+            
+            breakpoints: {
+                768: {
+                    loop: false,
+                }
+            }
+        });
+
+        
+        createSwiper('.js-swiper-testimonials-demo', {
+            lazy: true,
+            slidesPerView: 1,
+            watchOverflow: true,
+            threshold: 5,
+            spaceBetween: 25,
+            navigation: {
+                nextEl: '.js-swiper-testimonials-next-demo',
+                prevEl: '.js-swiper-testimonials-prev-demo',
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                }
+            }
+        });
+
+        
+        createSwiper('.js-informative-banners-demo', {
+            slidesPerView: 1.35,
+            watchOverflow: true,
+            threshold: 5,
+            spaceBetween: 25,
+            breakpoints: {
+                768: {
+                    slidesPerView: 'auto',
+                    loop: false,
+                }
+            }
+        });
+
+        
+        createSwiper('.js-swiper-product-demo', {
+            lazy: true,
+            slidesPerView: 1,
+            watchOverflow: true,
+            spaceBetween: 25,
+            navigation: {
+                nextEl: '.js-swiper-product-next-demo',
+                prevEl: '.js-swiper-product-prev-demo',
+            },
+            pagination: {
+                el: '.js-swiper-product-pagination-demo',
+                type: 'fraction',
+            },
+            breakpoints: {
+                768: {
+                    slidesPerView: 'auto',
+                }
+            },
+        });
+
+        
+        
+            createSwiper('.js-swiper-brands', {
+                lazy: true,
+                watchOverflow: true,
+                centerInsufficientSlides: true,
+                threshold: 5,
+                slidesPerView: 3,
+                navigation: {
+                    nextEl: '.js-swiper-brands-next',
+                    prevEl: '.js-swiper-brands-prev',
+                },
+                on: {
+                    afterInit: function () {
+                        hideSwiperControls(".js-swiper-brands-prev", ".js-swiper-brands-next");
+                    },
+                                    },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 10,
+                    }
+                }
+            });
+
+        
+        
+                                        
+        
+        
+                                        
+        
+            createSwiper('.js-informative-banners', {
+                                    loop: true,
+                    slidesPerView: 1.35,
+                                watchOverflow: true,
+                threshold: 5,
+                spaceBetween: 25,
+                breakpoints: {
+                    768: {
+                        slidesPerView: 'auto',
+                        loop: false,
+                    }
+                }
+            });
+        
+        
+        
+        
+                                                
+            var bannersPerViewDesktopVal = 3;
+            var bannersSpaceBetween = 0;
+
+                            if (window.innerWidth < 768) {
+            
+                
+                
+                    createSwiper('.js-swiper-banners', {
+                        lazy: true,
+                        watchOverflow: true,
+                        threshold: 5,
+                        watchSlideProgress: true,
+                        watchSlidesVisibility: true,
+                        slideVisibleClass: 'js-swiper-slide-visible',
+                        spaceBetween: bannersSpaceBetween,
+                        navigation: {
+                            nextEl: '.js-swiper-banners-next',
+                            prevEl: '.js-swiper-banners-prev',
+                        },
+                        slidesPerView: 1,
+                        on: {
+                            afterInit: function () {
+                                hideSwiperControls(".js-swiper-banners-prev", ".js-swiper-banners-next");
+                            },
+                        },
+                                        });
+
+                
+                
+                
+                            }
+            
+        
+        
+        
+        
+        
+        
+        
+                    createSwiper('.js-swiper-instafeed', {
+                lazy: true,
+                watchOverflow: true,
+                spaceBetween: itemSwiperSpaceBetween,
+                slidesPerView: 1.15,
+                observer: true,
+                breakpoints: {
+                    768: {
+                        slidesPerView: 3,
+                    }
+                }
+            });
+        
+        
+        
+            createSwiper('.js-swiper-categories', {
+                lazy: true,
+                                    loop: true,
+                                preloadImages : false,
+                watchOverflow: true,
+                watchSlidesVisibility : true,
+                slidesPerView: 'auto',
+                navigation: {
+                    nextEl: '.js-swiper-categories-next',
+                    prevEl: '.js-swiper-categories-prev',
+                },
+                on: {
+                    afterInit: function () {
+                        hideSwiperControls(".js-swiper-categories-prev", ".js-swiper-categories-next");
+                    },
+                },
+                breakpoints: {
+                    768: {
+                        loop: false,
+                    }
+                }
+            });
+
+        
+        
+                    if (jQueryNuvem('.js-product-description').height() < jQueryNuvem('.js-product-description').prop("scrollHeight")){
+                jQueryNuvem(".js-view-description").show();
+            }
+
+            jQueryNuvem(document).on("click", ".js-view-description", function(e) {
+                e.preventDefault();
+                jQueryNuvem(this).prev(".js-product-description").toggleClass("product-description-full");
+                jQueryNuvem(".js-view-more, .js-view-less").toggle();
+            });
+        
+	
+    
+	
+                                                
+        
+        function loadVideoFrame() {
+            window.youtubeIframeService.executeOnReady(() => { 
+                new YT.Player('player', {
+                        width: '100%',
+                        videoId: 'OMXUTcBf8KE',
+                        playerVars: { 'autoplay': 1, 'playsinline': 1, 'rel': 0, 'loop': 1, 'autopause': 0, 'controls': 0, 'showinfo': 0, 'modestbranding': 1, 'branding': 0, 'fs': 0, 'iv_load_policy': 3 },
+                        events: {
+                            'onReady': onPlayerReady,
+                            'onStateChange':onPlayerStateChange
+                        }
+                    }
+                );
+            });
+        };
+
+                                    jQueryNuvem('.js-play-button').on("click", function(e){
+                    e.preventDefault();
+                    jQueryNuvem(this).hide();
+                    jQueryNuvem(".js-home-video-image").hide();
+                    loadVideoFrame();
+                });
+                            
+
+        function onPlayerReady(event) {
+                        event.target.playVideo();
+        }
+
+        function onPlayerStateChange(event) {
+                        if (event.data == YT.PlayerState.ENDED) {
+                event.target.seekTo(0);
+                event.target.playVideo();
+            }
+        }
+
+    
+    
+
+	
+    var nav_height = jQueryNuvem(".js-head-main").innerHeight();
+
+	
+    
+    
+    
+    
+            const noStockVariants = (container = null) => {
+
+                        const config = {
+                variantsGroup: ".js-product-variants-group",
+                variantButton: ".js-insta-variant",
+                noStockClass: "btn-variant-no-stock",
+                dataVariationId: "data-variation-id",
+                dataOption: "data-option"
+            };
+
+                        const wrapper = container ? container : jQueryNuvem('#single-product');
+            if (!wrapper) return;
+
+                        const dataVariants = wrapper.data('variants');
+            const variantsLength = wrapper.find(config.variantsGroup).length;
+
+                        const getOptions = (productVariationId, variantOption) => {
+                if (productVariationId === 2) {
+                    return {
+                        option0: String(wrapper.find(`${config.variantsGroup}[${config.dataVariationId}="0"] select`).val()),
+                        option1: String(wrapper.find(`${config.variantsGroup}[${config.dataVariationId}="1"] select`).val()),
+                        option2: String(jQueryNuvem(variantOption).attr('data-option')),
+                    };
+                } else if (productVariationId === 1) {
+                    return {
+                        option0: String(wrapper.find(`${config.variantsGroup}[${config.dataVariationId}="0"] select`).val()),
+                        option1: String(jQueryNuvem(variantOption).attr('data-option')),
+                    };
+                } else {
+                    return {
+                        option0: String(jQueryNuvem(variantOption).attr('data-option')),
+                    };
+                }
+            };
+
+                        const filterVariants = (options) => {
+                return dataVariants.filter(variant => {
+                    return Object.keys(options).every(optionKey => variant[optionKey] === options[optionKey]) && variant.available;
+                });
+            };
+
+                        const updateStockStatus = (productVariationId) => {
+                const variationGroup = wrapper.find(`${config.variantsGroup}[${config.dataVariationId}="${productVariationId}"]`);
+                variationGroup.find(`${config.variantButton}.${config.noStockClass}`).removeClass(config.noStockClass);
+
+                variationGroup.find(config.variantButton).each((variantOption, item) => {
+                    const options = getOptions(productVariationId, variantOption);
+                    const itemsAvailable = filterVariants(options);
+                    const button = wrapper.find(`${config.variantsGroup}[${config.dataVariationId}="${productVariationId}"] ${config.variantButton}[${config.dataOption}="${options[`option${productVariationId}`].replace(/"/g, '\\"')}"]`);
+                    
+                    if (!itemsAvailable.length) {
+                        button.addClass(config.noStockClass);
+                    }
+                });
+            };
+
+                        for (let productVariationId = variantsLength - 1; productVariationId >= 0; productVariationId--) {
+                updateStockStatus(productVariationId);
+            }
+        };
+
+        noStockVariants();
+
+    
+    
+        
+        jQueryNuvem(document).on("click", ".js-quickshop-modal-open", function (e) {
+            e.preventDefault();
+            var $this = jQueryNuvem(this);
+            if($this.hasClass("js-quickshop-slide")){
+                jQueryNuvem("#quickshop-modal .js-item-product").addClass("js-swiper-slide-visible js-item-slide");
+            }
+
+                                            let container = jQueryNuvem(this).closest('.js-quickshop-container');
+                if (!container.length) return;
+                noStockVariants(container);
+            
+            LS.fillQuickshop($this);
+
+            if (window.innerWidth < 768) {
+                
+                var product_image_dimension = jQueryNuvem(this).closest('.js-item-product').find('.js-item-image-padding').attr("style");
+                jQueryNuvem("#quickshop-modal .js-quickshop-image-padding").attr("style", product_image_dimension);
+
+            }
+        });
+
+    
+            changeVariantButton = function(selector, parentSelector) {
+            selector.siblings().removeClass("selected");
+            selector.addClass("selected");
+            var option_id = selector.attr('data-option');
+            var parent = selector.closest(parentSelector);
+            var selected_option = parent.find('.js-variation-option option').filter(function (el) {
+                return el.value == option_id;
+            });
+            selected_option.prop('selected', true).trigger('change');
+            parent.find('.js-insta-variation-label').html(option_id);
+        }
+
+                    
+            jQueryNuvem(document).on("click", ".js-insta-variant", function (e) {
+                e.preventDefault();
+                $this = jQueryNuvem(this);
+                changeVariantButton($this, '.js-product-variants-group');
+            });
+
+        
+
+        
+    
+    
+        LS.registerOnChangeVariant(function(variant){
+                        const productContainer = jQueryNuvem('.js-item-product[data-product-id="'+variant.product_id+'"]');
+            const current_image = productContainer.find('.js-item-image');
+            current_image.attr('srcset', variant.image_url);
+
+            
+                                            productContainer.find(".js-product-item-private-with-secondary-images").addClass("product-item-secondary-images-disabled");
+                    });
+
+    
+    
+	
+	
+	function get_max_installments_without_interests(number_of_installment, installment_data, max_installments_without_interests) {
+	    if (parseInt(number_of_installment) > parseInt(max_installments_without_interests[0])) {
+	        if (installment_data.without_interests) {
+	            return [number_of_installment, installment_data.installment_value.toFixed(2)];
+	        }
+	    }
+	    return max_installments_without_interests;
+	}
+
+	
+	function get_max_installments_with_interests(number_of_installment, installment_data, max_installments_with_interests) {
+	    if (parseInt(number_of_installment) > parseInt(max_installments_with_interests[0])) {
+	        if (installment_data.without_interests == false) {
+	            return [number_of_installment, installment_data.installment_value.toFixed(2)];
+	        }
+	    }
+	    return max_installments_with_interests;
+	}
+
+	
+	function refreshInstallmentv2(price){
+        jQueryNuvem(".js-modal-installment-price" ).each(function( el ) {
+	        const installment = Number(jQueryNuvem(el).data('installment'));
+	        jQueryNuvem(el).text(LS.currency.display_short + (price/installment).toLocaleString('de-DE', {maximumFractionDigits: 2, minimumFractionDigits: 2}));
+	    });
+	}
+
+    
+    function refreshPaymentDiscount(price){
+        jQueryNuvem(".js-price-with-discount" ).each(function( el ) {
+            const payment_discount = jQueryNuvem(el).data('paymentDiscount');
+            jQueryNuvem(el).text(LS.formatToCurrency(price - ((price * payment_discount) / 100)))
+        });
+    }
+
+        
+	
+	
+	function changeVariant(variant) {
+        jQueryNuvem(".js-product-detail .js-shipping-calculator-response").hide();
+        jQueryNuvem("#shipping-variant-id").val(variant.id);
+
+	    var parent = jQueryNuvem("body");
+	    if (variant.element) {
+            parent = jQueryNuvem(variant.element);
+            if(parent.hasClass("js-quickshop-container")){
+                var quick_id = parent.attr("data-quickshop-id");
+                var parent = jQueryNuvem('.js-quickshop-container[data-quickshop-id="'+quick_id+'"]');
+            }
+	    }
+
+                                if(parent.hasClass("js-quickshop-container")){
+                var itemContainer = parent.closest('.js-item-product');
+                if(itemContainer.hasClass("js-item-slide")){
+                    var parent = jQueryNuvem('.js-swiper-slide-visible .js-quickshop-container[data-quickshop-id="'+quick_id+'"]');
+                }
+                noStockVariants(parent);
+            } else {
+                noStockVariants();
+            }
+                
+	    var sku = parent.find('.js-product-sku');
+	    if(sku.length) {
+	        sku.text(variant.sku).show();
+	    }
+
+	    
+                
+	    var installment_helper = function($element, amount, price){
+	        $element.find('.js-installment-amount').text(amount);
+	        $element.find('.js-installment-price').attr("data-value", price);
+	        $element.find('.js-installment-price').text(LS.currency.display_short + parseFloat(price).toLocaleString('de-DE', { minimumFractionDigits: 2 }));
+	        if(variant.price_short && Math.abs(variant.price_number - price * amount) < 1) {
+	            $element.find('.js-installment-total-price').text((variant.price_short).toLocaleString('de-DE', { minimumFractionDigits: 2 }));
+	        } else {
+	            $element.find('.js-installment-total-price').text(LS.currency.display_short + (price * amount).toLocaleString('de-DE', { minimumFractionDigits: 2 }));
+	        }
+	    };
+
+	    if (variant.installments_data) {
+	        var variant_installments = JSON.parse(variant.installments_data);
+	        var max_installments_without_interests = [0,0];
+	        var max_installments_with_interests = [0,0];
+
+	        	        jQueryNuvem('.js-payment-provider-installments-row').hide();
+
+	        for (let payment_method in variant_installments) {
+
+	            	            var paymentMethodId = '#installment_' + payment_method.replace(" ", "_") + '_1';
+	            var minimumInstallmentValue = jQueryNuvem(paymentMethodId).closest('.js-info-payment-method').attr("data-minimum-installment-value");
+
+                let installments = variant_installments[payment_method];
+	            for (let number_of_installment in installments) {
+                    let installment_data = installments[number_of_installment];
+	                max_installments_without_interests = get_max_installments_without_interests(number_of_installment, installment_data, max_installments_without_interests);
+	                max_installments_with_interests = get_max_installments_with_interests(number_of_installment, installment_data, max_installments_with_interests);
+	                var installment_container_selector = '#installment_' + payment_method.replace(" ", "_") + '_' + number_of_installment;
+
+	                	                if(minimumInstallmentValue <= installment_data.installment_value) {
+	                    jQueryNuvem(installment_container_selector).show();
+	                }
+
+	                if(!parent.hasClass("js-quickshop-container")){
+	                    installment_helper(jQueryNuvem(installment_container_selector), number_of_installment, installment_data.installment_value.toFixed(2));
+	                }
+	            }
+	        }
+	        var $installments_container = jQueryNuvem(variant.element + ' .js-max-installments-container .js-max-installments');
+	        var $installments_modal_link = jQueryNuvem(variant.element + ' #btn-installments');
+	        var $payments_module = jQueryNuvem(variant.element + ' .js-product-payments-container');
+	        var $installmens_card_icon = jQueryNuvem(variant.element + ' .js-installments-credit-card-icon');
+
+	        	        var installments_to_use = max_installments_without_interests[0] > 1 ? max_installments_without_interests : max_installments_with_interests;
+
+	        if(installments_to_use[0] <= 1 ) {
+	        	            $installments_container.hide();
+	            $installments_modal_link.hide();
+	            $payments_module.hide();
+	            $installmens_card_icon.hide();
+	        } else {
+	            $installments_container.show();
+	            $installments_modal_link.show();
+	            $payments_module.show();
+	            $installmens_card_icon.show();
+	            installment_helper($installments_container, installments_to_use[0], installments_to_use[1]);
+	        }
+	    }
+
+	    if(!parent.hasClass("js-quickshop-container")){
+            jQueryNuvem('#installments-modal .js-installments-one-payment').text(variant.price_short).attr("data-value", variant.price_number);
+		}
+
+	    if (variant.price_short){
+	        parent.find('.js-price-display').text(variant.price_short).show();
+	        parent.find('.js-price-display').attr("content", variant.price_number).data('productPrice', variant.price_number_raw);
+
+            parent.find('.js-payment-discount-price-product').text(variant.price_with_payment_discount_short);
+            parent.find('.js-payment-discount-price-product-container').show();
+            
+            parent.find('.js-price-without-taxes').text(variant.price_without_taxes);
+            parent.find('.js-price-without-taxes-container').show();
+	    } else {
+	        parent.find('.js-price-display, .js-payment-discount-price-product-container, .js-price-without-taxes-container').hide();
+	    }
+
+	    if ((variant.compare_at_price_short) && !(parent.find(".js-price-display").css("display") == "none")) {
+	        parent.find('.js-compare-price-display').text(variant.compare_at_price_short).show();
+	    } else {
+	        parent.find('.js-compare-price-display').hide();
+	    }
+
+        var button = parent.find('.js-addtocart');
+        const quickshopButtonWording = parent.find('.js-open-quickshop-wording');
+        const quickshopButtonIcon = parent.find('.js-open-quickshop-icon');
+        button.removeClass('cart').removeClass('contact').removeClass('nostock');
+        var $product_shipping_calculator = parent.find("#product-shipping-container");
+
+        
+	                if (!variant.available){
+                button.val('Sin stock');
+                button.addClass('nostock');
+                button.attr('disabled', 'disabled');
+                quickshopButtonWording.text('Sin stock');
+                quickshopButtonIcon.addClass("d-none").removeClass("d-md-inline");
+                $product_shipping_calculator.hide();
+            } else if (variant.contact) {
+                button.val('Consultar precio');
+                button.addClass('contact');
+                button.removeAttr('disabled');
+                quickshopButtonWording.text('Consultar precio');
+                quickshopButtonIcon.addClass("d-none").removeClass("d-md-inline");
+                $product_shipping_calculator.hide();
+            } else {
+                button.val('Agregar al carrito');
+                button.addClass('cart');
+                button.removeAttr('disabled');
+                quickshopButtonWording.text('Comprar');
+                quickshopButtonIcon.addClass("d-md-inline");
+                $product_shipping_calculator.show();
+            }
+
+	    
+        
+        
+
+        
+        LS.updateShippingProduct();
+
+        zipcode_on_changevariant = jQueryNuvem("#product-shipping-container .js-shipping-input").val();
+        jQueryNuvem("#product-shipping-container .js-shipping-calculator-current-zip").text(zipcode_on_changevariant);
+
+        
+        LS.subscriptionChangeVariant(variant);
+	}
+
+	
+    jQueryNuvem(document).on("change", ".js-variation-option", function(e) {
+        var $parent = jQueryNuvem(this).closest(".js-product-variants");
+        var $variants_group = jQueryNuvem(this).closest(".js-product-variants-group");
+        var $quickshop_parent_wrapper = jQueryNuvem(this).closest(".js-quickshop-container");
+
+        
+        var quick_id = $quickshop_parent_wrapper.attr("data-quickshop-id");
+
+        if($parent.hasClass("js-product-quickshop-variants")){
+
+            var $quickshop_parent = jQueryNuvem(this).closest(".js-item-product");
+
+                        
+            if($quickshop_parent.hasClass("js-item-slide")){
+                var $quickshop_variant_selector = '.js-swiper-slide-visible .js-quickshop-container[data-quickshop-id="'+quick_id+'"]';
+            }else{
+                var $quickshop_variant_selector = '.js-quickshop-container[data-quickshop-id="'+quick_id+'"]';
+            }
+
+            LS.changeVariant(changeVariant, $quickshop_variant_selector);
+
+                            
+                var selected_option_id = jQueryNuvem(this).val();
+                var $color_parent_to_update = jQueryNuvem('.js-quickshop-container[data-quickshop-id="'+quick_id+'"]');
+
+                                $color_parent_to_update.find('.js-color-variant[data-option="'+selected_option_id+'"]').addClass("selected").siblings().removeClass("selected");
+                                $variants_group.find('.js-insta-variant[data-option="'+selected_option_id+'"]').addClass("selected").siblings().removeClass("selected");
+            
+        } else {
+            LS.changeVariant(changeVariant, '#single-product');
+        }
+
+        
+        var $this_product_container = jQueryNuvem(this).closest(".js-product-container");
+
+        if($this_product_container.hasClass("js-quickshop-container")){
+            var this_quickshop_id = $this_product_container.attr("data-quickshop-id");
+            var $this_product_container = jQueryNuvem('.js-product-container[data-quickshop-id="'+this_quickshop_id+'"]');
+        }
+        var $this_compare_price = $this_product_container.find(".js-compare-price-display");
+        var $this_price = $this_product_container.find(".js-price-display");
+        var $installment_container = $this_product_container.find(".js-product-payments-container");
+        var $installment_text = $this_product_container.find(".js-max-installments-container");
+        var $this_add_to_cart = $this_product_container.find(".js-prod-submit-form");
+
+        // Get the current product discount percentage value
+        var current_percentage_value = $this_product_container.find(".js-offer-percentage");
+
+        // Get the current product price and promotional price
+        var compare_price_value = $this_compare_price.html();
+        var price_value = $this_price.html();
+
+        // Calculate new discount percentage based on difference between filtered old and new prices
+        const percentageDifference = window.moneyDifferenceCalculator.percentageDifferenceFromString(compare_price_value, price_value);
+        if(percentageDifference){
+            $this_product_container.find(".js-offer-percentage").text(percentageDifference);
+            $this_product_container.find(".js-offer-label").css("display" , "table");
+        }
+
+        if ($this_compare_price.css("display") == "none" || !percentageDifference) {
+            $this_product_container.find(".js-offer-label").hide();
+        }
+        if ($this_add_to_cart.hasClass("nostock")) {
+            $this_product_container.find(".js-stock-label").show();
+            $this_product_container.find(".js-offer-label").hide();
+            $this_product_container.find(".js-shipping-label").hide();
+        }
+        else {
+            $this_product_container.find(".js-stock-label").hide();
+            $this_product_container.find(".js-shipping-label").show();
+	    }
+	    if ($this_price.css('display') == 'none'){
+	        $installment_container.hide();
+	        $installment_text.hide();
+	    }else{
+	        $installment_text.show();
+	    }
+	});
+
+	
+	
+    jQueryNuvem(".js-product-form").on("submit", function (e) {
+	    var button = jQueryNuvem(e.currentTarget).find('[type="submit"]');
+	    button.attr('disabled', 'disabled');
+	    if ((button.hasClass('contact')) || (button.hasClass('catalog'))) {
+	        e.preventDefault();
+	        var product_id = jQueryNuvem(e.currentTarget).find("input[name='add_to_cart']").val();
+	        window.location = "\/contacto\/?product=" + product_id;
+	    } else if (button.hasClass('cart')) {
+	        button.val('Agregando...');
+	    }
+	});
+
+	
+        var has_multiple_slides = false;
+
+                    var product_images_amount = jQueryNuvem(".js-swiper-product").attr("data-product-images-amount");
+            if(product_images_amount > 1) {
+                var has_multiple_slides = true;
+            }
+        
+	    
+        
+        function productSliderNav(){
+
+            var width = window.innerWidth;
+
+            var productSwiper = null;
+            createSwiper(
+                '.js-swiper-product', {
+                    lazy: true,
+                    slidesPerView: 1,
+                    threshold: 5,
+                    centerInsufficientSlides: true,
+                    watchOverflow: true,
+                    spaceBetween: 25,
+                    pagination: {
+                        el: '.js-swiper-product-pagination',
+                        type: 'fraction',
+                    },
+                    navigation: {
+                        nextEl: '.js-swiper-product-next',
+                        prevEl: '.js-swiper-product-prev',
+                    },
+                    breakpoints: {
+                        768: {
+                            slidesPerView: 'auto',
+                        }
+                    },
+                    on: {
+                        init: function () {
+                            jQueryNuvem(".js-product-slider-placeholder").hide();
+                            jQueryNuvem(".js-swiper-product").css("visibility", "visible").css("height", "auto");
+                                                    },
+                                            },
+                },
+                function(swiperInstance) {
+                    productSwiper = swiperInstance;
+                }
+            );
+
+            
+            if(has_multiple_slides){
+                LS.registerOnChangeVariant(function(variant){
+                    var liImage = jQueryNuvem('.js-swiper-product').find("[data-image='"+variant.image+"']");
+                    var selectedPosition = liImage.data('imagePosition');
+                    var slideToGo = parseInt(selectedPosition);
+                    productSwiper.slideTo(slideToGo);
+                    jQueryNuvem(".js-product-slide-img").removeClass("js-active-variant");
+                    liImage.find(".js-product-slide-img").addClass("js-active-variant");
+                });
+
+            }
+        }
+
+        productSliderNav()
+
+        
+        jQueryNuvem('.js-pinterest-share').on("click", function(e){
+            e.preventDefault();
+            jQueryNuvem(".pinterest-hidden a").get()[0].click();
+        });
+
+	
+    
+    jQueryNuvem(document).on("click", ".js-quantity .js-quantity-up", function (e) {
+        $quantity_input = jQueryNuvem(this).closest(".js-quantity").find(".js-quantity-input");
+        $quantity_input.val( parseInt($quantity_input.val(), 10) + 1);
+    });
+
+    jQueryNuvem(document).on("click", ".js-quantity .js-quantity-down", function (e) {
+        $quantity_input = jQueryNuvem(this).closest(".js-quantity").find(".js-quantity-input");
+        quantity_input_val = $quantity_input.val();
+        if (quantity_input_val>1) {
+            $quantity_input.val( parseInt($quantity_input.val(), 10) - 1);
+        }
+    });
+
+
+	
+    
+    
+    var head_height = jQueryNuvem(".js-head-main").outerHeight();
+
+    if (window.innerWidth > 768) {
+                    jQueryNuvem("#cart-sticky-summary").css("top" , (head_height + 10).toString() + 'px');
+            }
+
+
+    
+    function getQuickShopImgSrc(element){
+        const image = jQueryNuvem(element).closest('.js-quickshop-container').find('img');
+        return String(image.attr('srcset'));
+    }
+
+    jQueryNuvem(document).on("click", ".js-addtocart:not(.js-addtocart-placeholder)", function (e) {
+
+        
+        var $productContainer = jQueryNuvem(this).closest('.js-product-container');
+        var $productVariants = $productContainer.find(".js-variation-option");
+        var $productButton = $productContainer.find("input[type='submit'].js-addtocart");
+        var productButtonWidth = $productButton.first(el => el.offsetWidth);
+
+        
+        var isQuickShop = $productContainer.hasClass('js-quickshop-container');
+        if (isQuickShop) {
+            var $productButtonContainer = $productButton.closest(".js-item-submit-container");
+        }
+        var isCrossSelling = $productContainer.hasClass('js-cross-selling-container');
+        var $productButtonPlaceholder = $productContainer.find(".js-addtocart-placeholder");
+        var $productButtonText = $productButtonPlaceholder.find(".js-addtocart-text");
+        var $productButtonAdding = $productButtonPlaceholder.find(".js-addtocart-adding");
+        var $productButtonSuccess = $productButtonPlaceholder.find(".js-addtocart-success");
+
+        
+        if (isCrossSelling) {
+            var imageSrc = $productContainer.find('.js-cross-selling-product-image').attr('src');
+            var quantity = $productContainer.data('quantity')
+            var name = $productContainer.find('.js-cross-selling-product-name').text();
+            var price = $productContainer.find('.js-cross-selling-promo-price').text();
+            var addedToCartCopy = $productContainer.data('add-to-cart-translation');
+        } else if (!isQuickShop) {
+            if(jQueryNuvem(".js-product-slide-img.js-active-variant").length) {
+                var $activeVariantImg = $productContainer.find('.js-product-slide-img.js-active-variant');
+                var imageSrc = $activeVariantImg.attr('srcset') || $activeVariantImg.data('srcset');
+            } else {
+                var $defaultImg = $productContainer.find('.js-product-slide-img');
+                var imageSrc = $defaultImg.attr('srcset') || $defaultImg.data('srcset');
+            }
+            
+            imageSrc = imageSrc ? imageSrc.split(' ')[0] : '';
+            var quantity = $productContainer.find('.js-quantity-input').val();
+            var name = $productContainer.find('.js-product-name').text();
+            var price = $productContainer.find('.js-price-display').text();
+            var addedToCartCopy = "Agregar al carrito";
+        } else {
+            var imageSrc = getQuickShopImgSrc(this);
+            var quantity = 1;
+            var name = $productContainer.find('.js-item-name').text();
+            var price = $productContainer.find('.js-price-display').text().trim();
+            var addedToCartCopy = "Comprar";
+            if ($productContainer.hasClass("js-quickshop-has-variants")) {
+                var addedToCartCopy = "Agregar al carrito";
+            }else{
+                var addedToCartCopy = "Comprar";
+            }
+        }
+
+        if (!jQueryNuvem(this).hasClass('contact')) {
+
+            
+            $productButton.hide();
+            if (isQuickShop) {
+                $productButtonContainer.hide();
+            }
+
+            $productButtonPlaceholder.width(productButtonWidth).css('display' , 'block');
+            $productButtonText.fadeOut();
+            $productButtonAdding.addClass("active");
+
+            
+            function restore_button_initial_state(){
+                $productButtonAdding.removeClass("active");
+                $productButtonText.fadeIn();
+                $productButtonPlaceholder.removeAttr("style").hide();
+                $productButton.show();
+                if (isQuickShop) {
+                    $productButtonContainer.show();
+                }
+            }
+
+            
+            var subscription_callback_error = function() {
+                setTimeout(function() {
+                    restore_button_initial_state();
+                }, 500);
+            }
+
+            
+            const subscriptionValidResult = LS.subscriptionSubmit($productContainer, subscription_callback_error, e);
+            if (subscriptionValidResult && subscriptionValidResult.changeCartSubmit) {
+                return;
+            }
+
+            
+                e.preventDefault();
+
+                var callback_add_to_cart = function(html_notification_related_products, html_notification_cross_selling) {
+
+                    
+                    jQueryNuvem('.js-cart-notification-item-img').attr('srcset', imageSrc);
+                    jQueryNuvem('.js-cart-notification-item-name').text(name);
+                    jQueryNuvem('.js-cart-notification-item-quantity').text(quantity);
+                    jQueryNuvem('.js-cart-notification-item-price').text(price);
+
+                    if($productVariants.length){
+                        var output = [];
+
+                        $productVariants.each( function(el){
+                            var variants = jQueryNuvem(el);
+                            output.push(variants.val());
+                        });
+                        jQueryNuvem(".js-cart-notification-item-variant-container").show();
+                        jQueryNuvem(".js-cart-notification-item-variant").text(output.join(', '))
+                    }else{
+                        jQueryNuvem(".js-cart-notification-item-variant-container").hide();
+                    }
+
+                    
+                    var cartItemsBadge = jQueryNuvem(".js-cart-widget-amount");
+                    var cartItemsMoney = jQueryNuvem(".js-cart-widget-total");
+                    var cartItemsAmount = cartItemsBadge.text();
+
+                    cartItemsBadge.removeClass("d-none d-md-inline-block");
+                    
+                    if (window.innerWidth > 768) {
+                        cartItemsMoney.removeClass("d-none d-md-inline-block");
+                    }
+
+                    if(cartItemsAmount > 1){
+                        jQueryNuvem(".js-cart-counts-plural").show();
+                        jQueryNuvem(".js-cart-counts-singular").hide();
+                    }else{
+                        jQueryNuvem(".js-cart-counts-singular").show();
+                        jQueryNuvem(".js-cart-counts-plural").hide();
+                    }
+
+                    
+                    $productButtonAdding.removeClass("active");
+                    $productButtonSuccess.addClass("active");
+                    setTimeout(function(){
+                        $productButtonSuccess.removeClass("active");
+                        $productButtonText.fadeIn();
+                    },2000);
+                    setTimeout(function(){
+                        $productButtonPlaceholder.removeAttr("style").hide();
+                        $productButton.show();
+                        if (isQuickShop) {
+                            $productButtonContainer.show();
+                        }
+                    },3000);
+
+                    $productContainer.find(".js-added-to-cart-product-message").slideDown();
+
+                    if (isQuickShop) {
+                        jQueryNuvem("#quickshop-modal").removeClass('modal-show');
+                        jQueryNuvem(".js-modal-overlay[data-modal-id='#quickshop-modal']").hide();
+                        jQueryNuvem("body").removeClass("overflow-none");
+                        restoreQuickshopForm();
+                        if (window.innerWidth < 768) {
+                            cleanURLHash();
+                        }
+                    }
+
+                    let notificationWithRelatedProducts = false;
+
+                    
+                        
+                        function recommendProductsOnAddToCart(){
+
+                            jQueryNuvem('.js-related-products-notification-container').html("");
+
+                            modalOpen('#related-products-notification');
+
+                            jQueryNuvem('.js-related-products-notification-container').html(html_notification_related_products).show();
+
+                            
+                            // Set loop for recommended products
+
+                            function calculateRelatedNotificationLoopVal(sectionSelector) {
+                                let productsAmount = jQueryNuvem(sectionSelector).attr("data-related-amount");
+                                let loopVal = false;
+                                const applyLoop = (window.innerWidth < 768 && productsAmount > 2) || (window.innerWidth > 768 && productsAmount > 4);
+                                
+                                if (applyLoop) {
+                                    loopVal = true;
+                                }
+                                
+                                return loopVal;
+                            }
+
+                            let cartRelatedLoopVal = calculateRelatedNotificationLoopVal(".js-related-products-notification");
+
+                            // Create new swiper on add to cart
+
+                            createSwiper('.js-swiper-related-products-notification', {
+                                lazy: true,
+                                loop: cartRelatedLoopVal,
+                                watchOverflow: true,
+                                threshold: 5,
+                                watchSlideProgress: true,
+                                watchSlidesVisibility: true,
+                                spaceBetween: itemSwiperSpaceBetween,
+                                slideVisibleClass: 'js-swiper-slide-visible',
+                                slidesPerView: 2.5,
+                                navigation: {
+                                    nextEl: '.js-swiper-related-products-notification-next',
+                                    prevEl: '.js-swiper-related-products-notification-prev',
+                                },
+                                on: {
+                                    afterInit: function () {
+                                        hideSwiperControls(".js-swiper-related-products-notification-prev", ".js-swiper-related-products-notification-next");
+                                    },
+                                },
+                                breakpoints: {
+                                    768: {
+                                        slidesPerView: 4,
+                                    }
+                                }
+                            });
+                        }
+                        
+                        notificationWithRelatedProducts = html_notification_related_products != null;
+
+                        if(notificationWithRelatedProducts){
+                            if (isQuickShop) {
+                                setTimeout(function(){
+                                    recommendProductsOnAddToCart();
+                                },300);
+                            }else{
+                                recommendProductsOnAddToCart();
+                            }
+                        }
+
+                    
+                    let shouldShowCrossSellingModal = html_notification_cross_selling != null;
+
+                    if(!notificationWithRelatedProducts){
+
+                        const cartOpenType = jQueryNuvem("#modal-cart").attr('data-cart-open-type');
+
+                        if((cartOpenType === 'show_cart') && !shouldShowCrossSellingModal){
+
+                            
+                            modalOpen('#modal-cart', 'openFullScreenWithoutClick');
+
+                        }else{
+
+                                                        
+                            setTimeout(function(){
+                                jQueryNuvem(".js-alert-added-to-cart").show().addClass("notification-visible").removeClass("notification-hidden");
+                            },500);
+
+                            if (!cookieService.get('first_product_added_successfully')) {
+                                cookieService.set('first_product_added_successfully', 1, 7 );
+                            } else{
+                                setTimeout(function(){
+                                    jQueryNuvem(".js-alert-added-to-cart").removeClass("notification-visible").addClass("notification-hidden");
+                                    setTimeout(function(){
+                                        jQueryNuvem('.js-cart-notification-item-img').attr('src', '');
+                                        jQueryNuvem(".js-alert-added-to-cart").hide();
+                                    },2000);
+                                },8000);
+                            }
+                        } 
+                    }
+
+                    
+                    if (html_notification_cross_selling != null) {
+                        jQueryNuvem('.js-cross-selling-modal-body').html("");
+                        modalOpen('#js-cross-selling-modal');
+                        jQueryNuvem('.js-cross-selling-modal-body').html(html_notification_cross_selling).show();
+                    }
+
+                    
+                    const crossSellingContainer = document.querySelector('.js-cross-selling-container');
+
+                    if (crossSellingContainer) {
+                        LS.fillCrossSelling(crossSellingContainer);
+                    }
+
+                    
+                    
+                    if (jQueryNuvem("#product-shipping-container .js-shipping-input").val()) {
+                        zipcode_on_addtocart = jQueryNuvem("#product-shipping-container .js-shipping-input").val();
+                        jQueryNuvem("#cart-shipping-container .js-shipping-input").val(zipcode_on_addtocart);
+                        jQueryNuvem(".js-shipping-calculator-current-zip").text(zipcode_on_addtocart);
+                    } else if (cookieService.get('calculator_zipcode')){
+                        var zipcode_from_cookie = cookieService.get('calculator_zipcode');
+                        jQueryNuvem('.js-shipping-input').val(zipcode_from_cookie);
+                        jQueryNuvem(".js-shipping-calculator-current-zip").text(zipcode_from_cookie);
+                    }
+
+
+                    
+                    jQueryNuvem(".js-fs-add-this-product").hide();
+                    jQueryNuvem(".js-fs-add-one-more").show();
+
+                    
+                    if (isCrossSelling) {
+                        jQueryNuvem('#js-cross-selling-modal .js-modal-close').trigger('click');
+                    }
+                }
+                var callback_error = function(){
+                    restore_button_initial_state();
+                }
+                $prod_form = jQueryNuvem(this).closest("form");
+                LS.addToCartEnhanced(
+                    $prod_form,
+                    addedToCartCopy,
+                    'Agregando...',
+                    'No hay más stock de este producto.',
+                    false,
+                        callback_add_to_cart,
+                        callback_error
+                );
+                    }
+    });
+
+
+    
+    jQueryNuvem(document).on("keypress", ".js-cart-quantity-input", function (e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+    });
+
+    jQueryNuvem(document).on("focusout", ".js-cart-quantity-input", function (e) {
+        var itemID = jQueryNuvem(this).attr("data-item-id");
+        var itemVAL = jQueryNuvem(this).val();
+        if (itemVAL == 0) {
+            var r = confirm("¿Seguro que quieres borrar este artículo?");
+            if (r == true) {
+                LS.removeItem(itemID, true);
+            } else {
+                jQueryNuvem(this).val(1);
+            }
+        } else {
+            LS.changeQuantity(itemID, itemVAL, true);
+        }
+    });
+
+    
+    jQueryNuvem(".js-trigger-empty-cart-alert").on("click", function (e) {
+        e.preventDefault();
+        let emptyCartAlert = jQueryNuvem(".js-mobile-nav-empty-cart-alert").fadeIn(100);
+        setTimeout(() => emptyCartAlert.fadeOut(500), 1500);
+    });
+
+    
+    document.addEventListener( 'cart.released', () => {
+        const cart_amount = jQueryNuvem(".js-cart-widget-amount").text();
+        if(cart_amount == 1) {
+            jQueryNuvem(".js-amount-one-item").show();
+            jQueryNuvem(".js-amount-many-items").hide();
+        }else{
+            jQueryNuvem(".js-amount-one-item").hide();
+            jQueryNuvem(".js-amount-many-items").show();
+        }
+    });
+
+    
+    
+    jQueryNuvem('form[action="\/comprar\/"]').on("submit", function() {
+        cookieService.remove('first_product_added_successfully');
+    });
+
+
+	
+    
+            if (jQueryNuvem('.js-selected-shipping-method').length) {
+            var shipping_cost = jQueryNuvem('.js-selected-shipping-method').data("cost");
+            var $shippingCost = jQueryNuvem("#shipping-cost");
+            $shippingCost.text(shipping_cost);
+            $shippingCost.removeClass('opacity-40');
+        }
+    
+	
+    selectShippingOption = function(elem, save_option) {
+        jQueryNuvem(".js-shipping-method, .js-branch-method").removeClass('js-selected-shipping-method');
+        jQueryNuvem(elem).addClass('js-selected-shipping-method');
+
+        
+            var shipping_cost = jQueryNuvem(elem).data("cost");
+            var shipping_price_clean = jQueryNuvem(elem).data("price");
+
+            if(shipping_price_clean = 0.00){
+                var shipping_cost = ''
+            }
+
+            // Updates shipping (ship and pickup) cost on cart
+            var $shippingCost = jQueryNuvem("#shipping-cost");
+            $shippingCost.text(shipping_cost);
+            $shippingCost.removeClass('opacity-40');
+
+        
+        if (save_option) {
+            LS.saveCalculatedShipping(true);
+        }
+        if (jQueryNuvem(elem).hasClass("js-shipping-method-hidden")) {
+                        if (jQueryNuvem(elem).hasClass("js-pickup-option")) {
+                jQueryNuvem(".js-other-pickup-options, .js-show-other-pickup-options .js-shipping-see-less").show();
+                jQueryNuvem(".js-show-other-pickup-options .js-shipping-see-more").hide();
+            } else {
+                jQueryNuvem(".js-other-shipping-options, .js-show-more-shipping-options .js-shipping-see-less").show();
+                jQueryNuvem(".js-show-more-shipping-options .js-shipping-see-more").hide()
+            }
+        }
+    };
+
+    
+    if (cookieService.get('calculator_zipcode')) {
+
+        
+        var zipcode_from_cookie = cookieService.get('calculator_zipcode');
+
+        
+            
+            jQueryNuvem('#product-shipping-container .js-shipping-input').val(zipcode_from_cookie);
+
+        
+        jQueryNuvem(".js-shipping-calculator-current-zip").text(zipcode_from_cookie);
+
+        
+        jQueryNuvem(".js-shipping-calculator-head").addClass("with-zip").removeClass("with-form");
+        jQueryNuvem(".js-shipping-calculator-with-zipcode").addClass("transition-up-active");
+        jQueryNuvem(".js-shipping-calculator-spinner").show();
+    } else {
+
+        
+        jQueryNuvem(".js-shipping-calculator-form").addClass("transition-up-active");
+    }
+
+    
+    removeShippingSuboptions = function(){
+        var shipping_suboptions_id = jQueryNuvem(".js-modal-shipping-suboptions").attr("id");
+        jQueryNuvem("#" + shipping_suboptions_id).remove();
+        jQueryNuvem('.js-modal-overlay[data-modal-id="#' + shipping_suboptions_id + '"').remove();
+    };
+
+    
+
+    jQueryNuvem(".js-calculate-shipping").on("click", function (e) {
+	    e.preventDefault();
+
+                let shipping_input_val = jQueryNuvem(e.currentTarget).closest(".js-shipping-calculator-form").find(".js-shipping-input").val();
+
+        jQueryNuvem(".js-shipping-input").val(shipping_input_val);
+
+        
+        if (jQueryNuvem(".js-cart-item").length) {
+            LS.calculateShippingAjax(
+            jQueryNuvem('#cart-shipping-container').find(".js-shipping-input").val(),
+            '\/envio\/',
+            jQueryNuvem("#cart-shipping-container").closest(".js-shipping-calculator-container") );
+        }
+
+        jQueryNuvem(".js-shipping-calculator-current-zip").html(shipping_input_val);
+        removeShippingSuboptions();
+	});
+
+	
+    jQueryNuvem(".js-shipping-input").on('keydown', function (e) {
+	    var key = e.which ? e.which : e.keyCode;
+	    var enterKey = 13;
+	    if (key === enterKey) {
+	        e.preventDefault();
+            jQueryNuvem(e.currentTarget).closest(".js-shipping-calculator-form").find(".js-calculate-shipping").trigger('click');
+	        if (window.innerWidth < 768) {
+                jQueryNuvem(e.currentTarget).trigger('blur');
+	        }
+	    }
+	});
+
+    
+    jQueryNuvem(document).on("change", ".js-shipping-method, .js-branch-method", function (e) {
+        selectShippingOption(this, true);
+        jQueryNuvem(".js-shipping-method-unavailable").hide();
+    });
+
+    
+    jQueryNuvem(document).on('shipping.options.checked', '.js-shipping-method', function (e) {
+        let shippingPrice = jQueryNuvem(this).attr("data-price");
+        LS.addToTotal(shippingPrice);
+
+        let total = (LS.data.cart.total / 100) + parseFloat(shippingPrice);
+        jQueryNuvem(".js-cart-widget-total").html(LS.formatToCurrency(total));
+
+        selectShippingOption(this, false);
+    });
+
+    
+    jQueryNuvem(document).on("click", ".js-toggle-more-shipping-options", function(e) {
+	    e.preventDefault();
+
+        
+        if(jQueryNuvem(this).hasClass("js-show-other-pickup-options")){
+            jQueryNuvem(".js-other-pickup-options").slideToggle(600);
+            jQueryNuvem(".js-show-other-pickup-options .js-shipping-see-less, .js-show-other-pickup-options .js-shipping-see-more").toggle();
+        }else{
+            jQueryNuvem(".js-other-shipping-options").slideToggle(600);
+            jQueryNuvem(".js-show-more-shipping-options .js-shipping-see-less, .js-show-more-shipping-options .js-shipping-see-more").toggle();
+        }
+	});
+
+    
+    
+    calculateCartShippingOnLoad = function() {
+                if (jQueryNuvem("#cart-shipping-container .js-shipping-input").val()) {
+            // If user already had calculated shipping: recalculate shipping
+            setTimeout(function() {
+                LS.calculateShippingAjax(
+                    jQueryNuvem('#cart-shipping-container').find(".js-shipping-input").val(),
+                    '\/envio\/',
+                    jQueryNuvem("#cart-shipping-container").closest(".js-shipping-calculator-container") );
+                removeShippingSuboptions();
+                window.toggleAccordionPrivate("#cart-shipping-container .js-toggle-shipping");
+            }, 100);
+        }
+
+        if (jQueryNuvem(".js-branch-method").hasClass('js-selected-shipping-method')) {
+                            window.toggleAccordionPrivate("#cart-shipping-container .js-toggle-branches");
+                    }
+    };
+
+    
+    
+    jQueryNuvem(document).on("click", ".js-shipping-calculator-change-zipcode", function(e) {
+        e.preventDefault();
+        jQueryNuvem(".js-shipping-calculator-response").fadeOut(100);
+        jQueryNuvem(".js-shipping-calculator-head").addClass("with-form").removeClass("with-zip");
+        jQueryNuvem(".js-shipping-calculator-with-zipcode").removeClass("transition-up-active");
+        jQueryNuvem(".js-shipping-calculator-form").addClass("transition-up-active");
+    });
+
+	
+	
+
+    
+    jQueryNuvem(document).on("click", ".js-save-shipping-country", function(e) {
+
+        e.preventDefault();
+
+        
+        lang_select_option = jQueryNuvem(this).closest(".js-modal-shipping-country");
+        changeLang(lang_select_option);
+
+        jQueryNuvem(this).text('Aplicando...').addClass("disabled");
+    });
+
+    
+    
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    if (isIOS) {
+        var ios_input_fields = jQueryNuvem("input[type='text'], input[type='number'], input[type='password'], input[type='tel'], textarea, input[type='search'], input[type='hidden'], input[type='email']");
+        ios_input_fields.addClass("form-control-ios");
+        jQueryNuvem(".js-quantity").addClass("form-group-quantity-ios");
+        jQueryNuvem(".js-cart-quantity-container").addClass("cart-quantity-container-ios");
+        jQueryNuvem(".js-search-form").toggleClass("search-form-ios");
+        jQueryNuvem(".js-price-filter-btn").addClass("price-btn-ios");
+        jQueryNuvem(".js-price-filter-empty").addClass("input-clear-content-ios");
+    }
+
+    
+            jQueryNuvem(".js-footer-col-sticky").css("top" , head_height + 40 + 'px');
+    
+    
+
+    
+    
+    
+    
+});
+            });
+        </script>
+
+        
+        
+
+        
+            <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;99965b828deaf436&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.9.1&quot;,&quot;token&quot;:&quot;2a3f03576c514bd3b43f2cb8c8b50533&quot;}" crossorigin="anonymous"></script>
+
+

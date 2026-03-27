@@ -1,0 +1,842 @@
+================================================================================
+ANÁLISIS COMPLETO DEL ARCHIVO: e:\xampp8.20\htdocs\betoge\sporttemplate
+Fecha: 2025-11-04
+Tamaño: 8,318 líneas | ~823KB
+================================================================================
+
+1. IDENTIFICACION DEL SITIO
+================================================================================
+Nombre Tienda: baires-skate
+Tipo: Tienda de artículos deportivos (skate)
+Categorías: Repuestos, Indumentaria, Calzado, Accesorios
+URL: https://baires-theme.mitiendanube.com
+Moneda: ARS (Pesos Argentinos)
+Idioma: Español (Argentina)
+Plataforma: MiTiendaNube
+
+================================================================================
+2. CONTENIDO DEL <HEAD> - RESUMEN
+================================================================================
+
+CHARSET Y META BÁSICOS:
+✓ UTF-8 (charset)
+✓ Viewport responsive (width=device-width, initial-scale=1)
+✓ Compatible IE/Chrome
+✓ Title: "Tienda Online de baires-skate"
+✓ Description: "Comprá productos de baires-skate..."
+✓ Canonical: https://baires-theme.mitiendanube.com/
+
+PRECONEXIONES (Performance):
+✓ preconnect: https://dcdn-us.mitiendanube.com (CDN principal)
+✓ preconnect: https://fonts.googleapis.com (Google Fonts)
+✓ preconnect: https://fonts.gstatic.com (Fonts storage)
+✓ dns-prefetch: dcdn-us.mitiendanube.com
+
+FUENTES TIPOGRAFICAS (Google Fonts):
+✓ Big Shoulders Display (400, 700)   → CSS Variable: --heading-font
+✓ Chivo (400, 700)                   → CSS Variable: --body-font
+URL: //fonts.googleapis.com/css?family=Big+Shoulders+Display:400,700|Chivo:400,700&display=swap
+
+ENLACES A CSS:
+✓ dart-style-critical-b0a03eba075af1eb0c307ad1c3a2f41b.css (Crítico)
+✓ dart-style-async-8f0a45a8e884c9144116ff6fcf196da8.css (Asíncrono con onload)
+✓ CDN Base: //dcdn-us.mitiendanube.com/stores/003/928/529/themes/baires/
+
+ENLACES A JAVASCRIPT:
+✓ dart-external-no-dependencies-2020a4748d2e0fc983451e7972c49502.js
+✓ Google reCAPTCHA: https://www.google.com/recaptcha/api.js (Invisible)
+
+FAVICON:
+✓ logo-1030716766-1699451691-3002808fc68b37dab18ced73cda902611699451691.ico
+
+OPEN GRAPH (Social Media):
+✓ og:site_name: "baires-skate"
+✓ og:type: "website"
+✓ og:title: "Tienda Online de baires-skate"
+✓ og:description: "Comprá productos..."
+✓ og:url: https://baires-theme.mitiendanube.com
+✓ og:image: (URL del logo)
+
+SEO:
+✓ robots: noindex,nofollow (para testing/demo)
+
+================================================================================
+3. VARIABLES CSS - COLORES Y TEMAS
+================================================================================
+
+COLORES PRINCIPALES:
+  --main-foreground: #000000 (Negro - textos)
+  --main-background: #FFFFFF (Blanco - fondos)
+  --accent-color: #000000 (Acentos)
+
+HEADER:
+  --header-background: #FFFFFF (Blanco)
+  --header-foreground: #000000 (Negro)
+  --header-transparent-foreground: (vacío - no configurado)
+
+FOOTER:
+  --footer-background: #000000 (Negro)
+  --footer-foreground: #FFFFFF (Blanco)
+
+BOTONES:
+  --button-background: #000000
+  --button-foreground: #FFFFFF
+
+NEWSLETTER:
+  --newsletter-background: #FFFFFF
+  --newsletter-foreground: #000000
+
+ESTADOS:
+  --success: #4bb98c (Verde - éxito)
+  --danger: #dd7774 (Rojo - error)
+  --warning: #dc8f38 (Naranja - advertencia)
+
+OPACIDADES DEFINIDAS:
+  --main-foreground-opacity-[03-90]: Variables con opciones 3%, 5%, 8%, 10%, 20%... 90%
+  --main-background-opacity-[30-90]: 30%, 40%, 50%, 80%, 90%
+  --header-foreground-opacity-[10-50]: 10%, 20%, 30%, 50%
+  --footer-foreground-opacity-[10-80]: 10%, 20%, 50%, 60%, 80%
+
+================================================================================
+4. VARIABLES CSS - TAMAÑOS Y ESPACIOS
+================================================================================
+
+TAMAÑOS DE FUENTES:
+  Headings: h1 (28px), h2 (24px), h3 (20px), h4 (18px), h5 (16px), h6 (14px)
+  Large: h1-huge (100px), h2-huge (70px), h3-huge (50px), h4-huge (40px)
+  Desktop: h1-huge-md (125px), h2-huge-md (200px)
+  Body: font-base (14px), font-big (16px), font-small (12px), font-smallest (10px)
+
+ESPACIADOS (Gutter):
+  --gutter: 15px
+  --gutter-container: 15px (móvil)
+  --gutter-container-md: 30px (desktop)
+  --gutter-negative: -15px
+  --gutter-half: 7.5px
+  --gutter-double: 30px
+
+DISTANCIAS DE SECCIÓN:
+  --section-distance: 30px
+  --section-distance-huge: 60px
+  --section-distance-huge-md: 90px (desktop)
+
+BORDES Y RADIUS:
+  --border-radius: 4px
+  --border-radius-full: 100%
+  --border-radius-half: 2px
+
+SOMBRAS:
+  --shadow-distance: 0 0 5px
+
+TRANSFORMACIÓN:
+  --main-text-transform: uppercase (textos en mayúscula)
+  --title-font-weight: bold
+
+================================================================================
+5. ESTRUCTURA DEL HEADER (Líneas 950-1057)
+================================================================================
+
+Elemento Raíz:
+  <header class="js-head-main head-main head-colors position-sticky position-sticky-md
+                 head-logo-center head-logo-md-center head-md-hamburger transition-soft"
+           data-store="head" style="top: 0px;">
+
+Clases Clave:
+  ✓ position-sticky (móvil), position-sticky-md (desktop) - Header fijo
+  ✓ head-logo-center / head-logo-md-center - Logo centrado
+  ✓ head-md-hamburger - Menú hamburguesa
+  ✓ transition-soft - Transiciones suaves
+
+ESTRUCTURA INTERNA:
+
+  1. MENÚ HAMBURGUESA (Móvil):
+     Clase: col-3 (3 columnas en móvil)
+     Toggle: #nav-hamburger
+     Botón: class="js-modal-open utilities-item btn btn-utility"
+     Texto: "Menú"
+     Aria-label: "Menú"
+
+  2. LOGO:
+     Clase: js-logo-container col text-center
+     URL: //dcdn-us.mitiendanube.com/.../logo-...webp
+     Alt: "baires-skate"
+     Clases Img: logo-img transition-soft logo-img-small
+     Dimensiones: width="573" height="132"
+     H1 invisible: <h1 style="display: none;">baires-skate</h1>
+
+  3. BÚSQUEDA (Desktop):
+     Clase: js-search-utility col-md-3
+     Display: d-none d-md-inline-block (oculto móvil)
+     Toggle: #nav-search
+     Botón: class="js-search-button js-modal-open js-fullscreen-modal-open"
+     Modal URL: modal-fullscreen-search
+     Aria-label: "Buscador"
+
+  4. LOGIN (Desktop):
+     Clase: col-md-3 text-right
+     Display: d-none d-md-inline-block
+     Link: /account/login/
+     Texto: "Login"
+
+  5. CARRITO:
+     ID: ajax-cart
+     Clase: cart-summary
+     Toggle: #modal-cart
+     Modal URL: modal-fullscreen-cart
+     Badge: <span class="js-cart-widget-amount badge">0</span> (cantidad)
+     Botones: class="js-modal-open js-fullscreen-modal-open"
+
+  6. NOTIFICACIÓN DE CARRITO (Oculta por defecto):
+     ID: js-alert-added-to-cart
+     Clase: notification-floating notification-cart-container
+     Display: display: none (mostrada vía JavaScript)
+     Contenido: Imagen, nombre, variante, cantidad, precio del producto agregado
+
+================================================================================
+6. ESTRUCTURA DEL FOOTER (Líneas 5977-6196)
+================================================================================
+
+Elemento Raíz:
+  <footer class="js-footer js-hide-footer-while-scrolling footer container-fluid
+                 footer-colors display-when-content-ready"
+           data-store="footer">
+
+CONTENIDO:
+
+  SECCIÓN 1 - CATEGORÍAS (col-md-6):
+    - REPUESTOS        → /repuestos/
+    - INDUMENTARIA     → /indumentaria/
+    - CALZADO          → /zapatillas/
+    - ACCESORIOS       → /accesorios/
+    Clases: h4-huge h2-huge-md (tamaños responsivos)
+
+  SECCIÓN 2 - NEWSLETTER, REDES Y CONTACTO (col-md-6):
+
+    NEWSLETTER:
+      Título: "SUSCRIBITE"
+      Form action: /winnie-pooh
+      Form method: POST
+      Email input: placeholder="Email"
+      Honeypot: name="winnie-pooh" (anti-spam)
+      Hidden fields: name, message, type
+      Submit: "Enviar"
+
+    REDES SOCIALES:
+      Instagram:  https://instagram.com/baires.sk8
+      Facebook:   https://facebook.com/tiendanube
+      YouTube:    https://youtube.com/tiendanube
+      TikTok:     https://www.tiktok.com/@tiendanube
+      Twitter:    https://www.twitter.com/tiendanube
+
+    CONTACTO:
+      Teléfono:  4506-7890 (link tel:)
+      Email:     baires.skate@tiendanube.com (link mailto:)
+      Dirección: Av. Córdoba 2334
+
+    LOGOS DE MÉTODOS DE PAGO (15+ opciones):
+      Tarjetas: Visa, Mastercard, Amex, Diners, Cabal, Tarjeta Naranja,
+                Tarjeta Shopping, Maestro, Visa Debit, Argencard, Cencosud
+      Efectivo: Cash, Pago Fácil, RapiPago
+      Otros: Custom, Other
+      CDN: //d26lpennugtm8s.cloudfront.net/assets/common/img/logos/payment/
+
+    LOGOS DE EMPRESAS DE ENVÍO:
+      OCA, Correo Argentino (6053), Branch, Múltiples, Table
+      CDN: //d26lpennugtm8s.cloudfront.net/assets/common/img/logos/shipping/
+
+  SECCIÓN INFERIOR:
+    Logo de empresa (imagen)
+
+    Links institucionales:
+      - NOSOTROS      → /quienes-somos/
+      - CÓMO COMPRAR  → /como-comprar/
+      - CONTACTO      → /quienes-somos/ (mismo que nosotros)
+
+    Copyright: "Copyright baires-skate - 2025. Todos los derechos reservados."
+
+    Powered By: TiendaNube (logo SVG + link)
+
+    Defensa del Consumidor:
+      - Link a argentina.gob.ar/produccion/defensadelconsumidor/formulario
+      - Botón de arrepentimiento → /contacto/?order_cancellation_without_id=true
+
+================================================================================
+7. SECCIONES PRINCIPALES DEL HOME - ORDEN VISUAL
+================================================================================
+
+1. BANNERS DE CATEGORÍAS (Línea 579)
+   data-store: home-banner-categories
+   Clase: section-home section-banners-home position-relative overflow-none
+   Contenido: Banners/slider de categorías principales
+
+2. MENSAJE INSTITUCIONAL (Línea 659)
+   data-store: home-institutional-message
+   Clase: section-home overflow-none
+   Contenido: Mensaje de empresa o bienvenida
+
+3. ANUNCIO ANIMADO (Línea 678)
+   data-store: home-announcement-message
+   Clase: section-home section-home-text-animated home-text-outline
+   Animación: fade-in (data-transition="fade-in")
+   Contenido: Texto con animación y outline
+
+4. PRODUCTOS "LO NUEVO" - FEATURED (Línea 826)
+   data-store: home-products-featured
+   Clase: section-home section-featured-home section-featured-products-home
+   Título: "LO NUEVO" (h3-huge h2-huge-md)
+   Carrusel: Swiper.js
+   Layout: col-12 (móvil), col-md-4 (3 columnas desktop)
+   Espaciado: 15px entre items (margin-right)
+
+   CONTENIDO POR PRODUCTO:
+   - Imagen (responsive)
+   - Nombre
+   - Precio (format: $X.XXX,00)
+   - Variantes (dropdown/botones)
+   - Cuotas disponibles
+   - Stock
+
+5. WELCOME MESSAGE (Línea 2010)
+   data-store: home-welcome-message
+   Clase: section-home section-home-text-animated
+   Animación: fade-in
+
+6. VIDEO/SLIDER PRINCIPAL (Línea 2105)
+   data-store: home-slider
+   Clase: section-slider-home section-home-color
+   Animación: fade-in
+
+7. MARCAS (Línea 2169)
+   data-store: home-brands
+   Clase: section-home section-brands-home overflow-none
+   Contenido: Logos de marcas
+
+8. PRODUCTO PRINCIPAL (Línea 2758)
+   ID: single-product
+   Clase: js-product-container section-home
+   Contenido:
+     - Producto destacado con precio
+     - Precio original y rebajado (si aplica)
+     - Variantes (talla, color, etc)
+     - Imágenes
+     - Información de cuotas (hasta 24 meses)
+     - Stock
+     - Botón agregar al carrito
+
+9. FEED DE INSTAGRAM (Línea 3095)
+   data-store: home-instagram-feed
+   Clase: section-home section-instafeed-home overflow-none
+   Contenido: Posts de Instagram integrados
+
+10. CATEGORÍAS DESTACADAS (Línea 3117)
+    data-store: home-categories-featured
+    Clase: section-home section-categories-home position-relative
+    Animación: fade-in
+    Contenido: Cards de categorías
+
+11. NUEVOS PRODUCTOS (Línea 3819)
+    data-store: home-products-new
+    Clase: section-home section-featured-home section-new-products-home
+    Contenido: Carrusel de productos nuevos (igual estructura que #4)
+
+12. NEWSLETTER (Línea 4732)
+    data-store: home-newsletter
+    Clase: section-newsletter-home position-relative overflow-none
+    Contenido: Formulario de suscripción
+
+13. VIDEO SECTION (Línea 4768)
+    data-store: home-video
+    Clase: js-section-video section-video-home position-relative
+    Animación: fade-in
+    Contenido: Iframe de video
+
+14. BANNER INFORMATIVO DE SERVICIOS (Línea 4792)
+    data-store: banner-services
+    Clase: section-home section-informative-banners
+    Contenido: Banners con info de envíos, garantía, atención, etc.
+
+================================================================================
+8. MODALES Y COMPONENTES INTERACTIVOS
+================================================================================
+
+MODALES (display: none inicialmente, controlados por JavaScript):
+
+1. #js-cross-selling-modal
+   Uso: Venta cruzada / productos relacionados
+   Clase: modal-bottom modal-bottom-sheet
+   Trigger: Automático del sistema
+
+2. #nav-search
+   Uso: Búsqueda fullscreen
+   Clase: modal-nav-search modal-fade
+   Trigger: data-toggle="#nav-search" (botón búsqueda)
+   Aria-label: "Buscador"
+
+3. #nav-hamburger
+   Uso: Menú de navegación móvil
+   Clase: modal-nav-hamburger modal-docked-md modal-left
+   Trigger: data-toggle="#nav-hamburger" (botón menú)
+   Aria-label: "Menú"
+
+4. #modal-cart
+   Uso: Carrito de compras fullscreen
+   Clase: modal-cart modal-right modal-right-md
+   Trigger: data-toggle="#modal-cart" (botón carrito)
+   Contenido dinámico: Productos en carrito con cantidades
+
+5. #error-ajax-stock
+   Uso: Mensaje de error si no hay stock
+   Display: none (mostrado vía JavaScript cuando aplica)
+
+6. #related-products-notification
+   Uso: Notificación de productos relacionados
+   Clase: modal-bottom modal-bottom-sheet
+   Trigger: Automático del sistema
+
+7. .js-modal-overlay
+   Uso: Fondo oscuro detrás de modales
+   Trigger: Automático (se muestra/oculta con modal)
+
+VARIABLE MONEDA:
+<div id="store-curr" class="hidden">ARS</div>
+
+================================================================================
+9. ESTRUCTURA DE PRODUCTOS - JSON DATA-VARIANTS
+================================================================================
+
+Cada producto tiene JSON con variantes almacenado en data-variants:
+
+{
+  "product_id": 189951147,
+  "price_short": "$19.000,00",        // Formato: $X.XXX,00
+  "price_long": "$19.000,00 ARS",
+  "price_number": 19000,              // Número en centavos
+  "price_number_raw": 1900000,        // Sin escala
+
+  "price_with_payment_discount_short": "$17.100,00",  // Con descuento de pago
+  "price_without_taxes": "$15.702,48", // Sin impuestos
+
+  "compare_at_price_short": null,     // Precio original (si hay descuento)
+  "compare_at_price_long": null,
+  "compare_at_price_number": null,
+  "has_promotional_price": false,     // Indica si hay descuento
+
+  "option0": "XS",                    // Variante 1 (talla, color, etc)
+  "option1": null,                    // Variante 2
+  "option2": null,                    // Variante 3
+
+  "stock": null,                      // null = stock infinito
+  "sku": null,
+  "available": true,                  // Disponible para compra
+  "is_visible": true,                 // Visible en catálogo
+  "contact": false,                   // Requiere contacto para comprar
+
+  "image": 559350261,                 // ID de imagen
+  "image_url": "//dcdn-us.mitiendanube.com/.../producto-...webp",
+
+  "id": 761654105,                    // ID variante
+
+  "installments_data": {              // Cuotas disponibles
+    "Pago Nube": {
+      "1": {
+        "installment_value": 19000,    // Valor cuota
+        "installment_value_cents": 1900000,
+        "interest": 0,                 // Interés
+        "total_value": 19000,          // Total a pagar
+        "without_interests": true      // Sin interés
+      }
+    },
+    "Mercado Pago": {
+      "1": {...},
+      "2": {...},
+      "3": {...},
+      "6": {...},
+      "9": {...},                      // Con interés
+      "12": {...},
+      "18": {...},
+      "24": {...}
+    },
+    "Pagos Personalizados": {...}
+  }
+}
+
+VARIANTES MOSTRADAS COMO:
+- Dropdown <select> en móvil (class="form-select js-variation-option")
+- Botones en desktop (class="js-insta-variant btn btn-variant selected/not selected")
+
+================================================================================
+10. SCRIPTS Y LIBRERÍAS
+================================================================================
+
+JAVASCRIPT EXTERNO:
+✓ dart-external-no-dependencies-2020a4748d2e0fc983451e7972c49502.js
+✓ Google reCAPTCHA: https://www.google.com/recaptcha/api.js
+
+SVGS Y ICONOGRAFÍA:
+✓ Sprite de SVG con iconos (uso: <use xlink:href="#times"></use>)
+✓ Logo SVG de TiendaNube en footer
+
+LIBRERÍAS IMPLÍCITAS (por clases):
+✓ Swiper.js (carruseles: class="swiper-slide")
+✓ Bootstrap 5 (grid system, utilities)
+✓ jQuery (seguramente, por data-toggle)
+✓ Google reCAPTCHA (javascript)
+
+================================================================================
+11. CLASES CSS CLAVE Y PATRONES
+================================================================================
+
+BOOTSTRAP UTILITIES:
+✓ container-fluid         - Contenedor 100% ancho
+✓ row, col-*, col-md-*    - Grid system
+✓ d-none, d-md-inline-block, d-md-none - Display responsivo
+✓ mb-*, pb-*, mr-*, pl-*  - Márgenes y padding (spacing)
+✓ text-center, text-left, text-right - Alineación
+✓ no-gutters              - Sin espaciado entre columnas
+✓ align-items-center      - Alineación vertical
+
+CLASES PERSONALIZADAS:
+✓ js-*                    - JavaScript hooks (js-modal-open, js-search-button, etc)
+✓ section-home            - Sección del home
+✓ position-sticky         - Elemento fijo en scroll
+✓ transition-soft         - Transiciones CSS suaves
+✓ is-inViewport           - Activa al entrar en viewport (para animaciones)
+✓ utilities-container     - Contenedor de utilidades header
+✓ cart-summary            - Resumen del carrito
+✓ notification-*          - Clases para notificaciones
+✓ lazyloaded              - Imagen ya cargada (lazy loading)
+✓ swiper-slide            - Item del carrusel
+
+DATA ATTRIBUTES:
+✓ data-store              - Para tracking/analytics
+✓ data-toggle             - Modal a abrir (ej: #nav-search)
+✓ data-modal-url          - URL del contenido del modal
+✓ data-component          - Identificador de componente
+✓ data-variants           - JSON de variantes de producto
+✓ data-transition         - Tipo de animación (fade-in)
+✓ data-product-id         - ID del producto
+✓ data-component-value    - Valor del componente
+
+================================================================================
+12. BREAKPOINTS Y RESPONSIVE DESIGN
+================================================================================
+
+MOBILE-FIRST APPROACH:
+
+Desktop Breakpoint: 768px (col-md-*)
+  < 768px   = Móvil
+  >= 768px  = Desktop
+
+EJEMPLOS DE USO:
+✓ col-12 col-md-4        - 100% ancho móvil, 33% desktop (3 columnas)
+✓ d-none d-md-inline-block - Oculto móvil, visible desktop
+✓ d-md-none              - Visible móvil, oculto desktop
+✓ order-first order-md-first - Orden diferente en desktop
+✓ pr-0 pr-md-5           - Sin padding-right móvil, con padding desktop
+✓ mb-4 mb-md-5           - Margin-bottom diferente según dispositivo
+
+================================================================================
+13. ANIMACIONES Y EFECTOS
+================================================================================
+
+ANIMACIÓN FADE-IN:
+✓ Usado en: announcement-message, welcome-message, slider, categories
+✓ Trigger: data-transition="fade-in"
+✓ Efecto: Fade in cuando sección entra en viewport
+✓ Clase: is-inViewport
+
+TRANSICIONES SUAVES:
+✓ Clase: transition-soft
+✓ Aplicado a: header, logo, modales
+✓ Efecto: Transiciones CSS suaves entre estados
+
+ANIMACIÓN DE MODALES:
+✓ Clase: transition-slide
+✓ Efecto: Deslizamiento modal (left, right, bottom)
+
+OUTLINE TEXT:
+✓ Clase: home-text-outline
+✓ Efecto: Texto con stroke/outline
+
+================================================================================
+14. SEO Y PERFORMANCE
+================================================================================
+
+OPTIMIZACIONES:
+✓ Preload/Preconnect para CDNs (Fonts, main CDN)
+✓ CSS Crítico separado de CSS asíncrono
+✓ Lazy loading de imágenes (class="lazyloaded")
+✓ Responsive images con imagesrcset
+✓ Modales deferidos (no en DOM inicial, agregados vía JS)
+✓ reCAPTCHA invisible (anti-spam)
+
+RECURSOS EXTERNOS:
+✓ Fuentes desde CDN de Google
+✓ Imágenes desde MiTiendaNube CDN
+✓ Logos de pagos/envíos desde CloudFront
+✓ reCAPTCHA desde Google
+
+ESTRUCTURA SEMÁNTICA:
+✓ <header> principal
+✓ <footer> principal
+✓ <section> para agrupar contenido
+✓ <h1> invisible pero presente
+✓ <img> con alt text
+✓ <a> con aria-label donde aplica
+
+ROBOTS:
+✓ Meta robots: noindex,nofollow (para testing)
+
+================================================================================
+15. FORMULARIOS
+================================================================================
+
+NEWSLETTER:
+  URL: /winnie-pooh
+  Method: POST
+  Campos:
+    ✓ email (type="email")
+    ✓ name (hidden, value="Sin nombre")
+    ✓ message (hidden, value="Pedido de inscripción a newsletter")
+    ✓ type (hidden, value="newsletter")
+    ✓ winnie-pooh (hidden, honeypot anti-spam)
+  Submit: "Enviar"
+
+CART MANAGEMENT:
+  Endpoint carrito: /envio/ (para cálculo de envío)
+  Métodos: AJAX
+  Datos enviados: Variantes seleccionadas, cantidad, método envío
+
+================================================================================
+16. FLUJO DE DATOS DINÁMICOS
+================================================================================
+
+USUARIO SELECCIONA VARIANTE:
+  1. Usuario hace click en botón variante (class="js-insta-variant")
+  2. JavaScript actualiza el select (js-variation-option)
+  3. Se dispara evento que actualiza:
+     - Precio
+     - Disponibilidad
+     - Cuotas (installments_data)
+     - Imagen del producto
+  4. Badge del carrito se actualiza con cantidad
+
+USUARIO AGREGA AL CARRITO:
+  1. Click en "Agregar al carrito"
+  2. AJAX POST con datos de producto y variante
+  3. Sistema agrega a carrito (sessionStorage/backend)
+  4. Notificación flotante muestra el producto agregado
+  5. Badge del carrito incrementa cantidad
+
+USUARIO ABRE CARRITO:
+  1. Click en carrito
+  2. Modal #modal-cart se abre (fullscreen)
+  3. AJAX GET obtiene contenido del carrito
+  4. Se muestra lista de productos con cantidades, precios
+  5. Opción para continuar comprando o ir a checkout
+
+================================================================================
+17. ARCHIVOS NECESARIOS PARA BLADE
+================================================================================
+
+ARCHIVOS A CREAR:
+
+1. resources/views/tienda/sport_layout.blade.php
+   - <!DOCTYPE html> con <head> completo
+   - Incluye todas las CSS variables
+   - Preload/preconnect
+   - Google Fonts
+   - <header> con navegación
+   - @yield('content') para contenido
+   - <footer> con estructura completa
+   - Scripts antes de </body>
+   - @stack('styles') y @stack('scripts')
+
+2. resources/views/tienda/sport_index.blade.php
+   - @extends('tienda.sport_layout')
+   - 14 secciones del home en orden
+   - Datos desde $empresa, $productos, $categorias
+   - Modales para búsqueda, carrito, hamburguesa
+   - Carruseles con Swiper.js
+   - Formulario newsletter
+   - Productos con data-variants JSON
+
+PARTIALS RECOMENDADOS:
+
+3. resources/views/tienda/partials/sport/header.blade.php
+   - Contenido del <header>
+   - Puede ser incluido en layout o en index
+
+4. resources/views/tienda/partials/sport/footer.blade.php
+   - Contenido del <footer>
+   - Puede ser incluido en layout
+
+5. resources/views/tienda/partials/sport/product-card.blade.php
+   - Card de producto reutilizable
+   - Recibe: $producto, $template
+   - Genera: imagen, precio, variantes, botón
+
+6. resources/views/tienda/partials/sport/slider.blade.php
+   - Carrusel Swiper
+   - Recibe: $productos, $titulo
+   - Genera: estructura swiper
+
+7. resources/views/tienda/partials/sport/newsletter.blade.php
+   - Formulario newsletter
+   - Datos de contacto
+
+================================================================================
+18. CONFIGURACION EN BASE DE DATOS
+================================================================================
+
+INSERTAR EN TABLA templates_tienda:
+
+INSERT INTO templates_tienda (codigo, nombre, descripcion, vista_index,
+  vista_categoria, vista_producto, layout, preview_image, activo, es_default,
+  orden, configuracion, created_at, updated_at)
+VALUES (
+  'sport',
+  'Sport Template',
+  'Template minimalista para tiendas deportivas con colores blanco y negro',
+  'tienda.sport_index',
+  'tienda.sport_categoria',
+  'tienda.sport_producto',
+  'tienda.sport_layout',
+  'images/templates/sport-preview.jpg',
+  true,
+  false,
+  2,
+  json_encode([
+    "color_primario" => "#000000",
+    "color_secundario" => "#FFFFFF",
+    "mostrar_banners" => true,
+    "mostrar_instagram" => true,
+    "mostrar_video" => true
+  ]),
+  NOW(),
+  NOW()
+);
+
+================================================================================
+19. ESTRUCTURA DE STRATEGY
+================================================================================
+
+CREAR: app/Services/Templates/Strategies/SportTemplateStrategy.php
+
+<?php
+
+namespace App\Services\Templates\Strategies;
+
+use App\Services\Templates\AbstractTemplateStrategy;
+
+class SportTemplateStrategy extends AbstractTemplateStrategy
+{
+    protected string $viewIndex = 'tienda.sport_index';
+    protected string $viewCategoria = 'tienda.sport_categoria';
+    protected string $viewProducto = 'tienda.sport_producto';
+    protected string $layout = 'tienda.sport_layout';
+
+    public function getAssets(): array
+    {
+        return [
+            'css' => [
+                asset('css/sport-theme.css'),
+            ],
+            'js' => [
+                asset('js/sport-theme.js'),
+            ],
+        ];
+    }
+
+    public function prepareData(array $data): array
+    {
+        $data['sportConfig'] = [
+            'mostrar_banners' => true,
+            'mostrar_instagram' => true,
+            'mostrar_video' => true,
+        ];
+        return $data;
+    }
+}
+
+REGISTRAR EN: app/Services/Templates/TemplateResolver.php
+
+private array $strategyMap = [
+    'default' => DefaultTemplateStrategy::class,
+    'brasilia' => BrasiliaTemplateStrategy::class,
+    'sport' => SportTemplateStrategy::class,  // AGREGAR ESTA LÍNEA
+];
+
+================================================================================
+20. NOTAS IMPORTANTES PARA IMPLEMENTACIÓN
+================================================================================
+
+FORMATO DE NÚMEROS:
+  ✓ Pesos Argentinos: $19.000,00 (punto = miles, coma = decimales)
+  ✓ Debe validarse CSS para aplicar formato correcto
+  ✓ JavaScript puede estar formateo precios
+
+IDIOMA:
+  ✓ Español de Argentina
+  ✓ Términos: "Carrito", "Menú", "Buscar", "Login", "Suscribite"
+  ✓ Formato de fecha/hora: DD/MM/YYYY HH:MM
+
+SEGURIDAD:
+  ✓ Honeypot en formularios (winnie-pooh)
+  ✓ reCAPTCHA invisible en formularios
+  ✓ CSRF tokens en formularios POST
+  ✓ Validación server-side de emails
+
+PERFORMANCE:
+  ✓ Lazy load imágenes (lazyloaded class)
+  ✓ Responsive images (imagesrcset)
+  ✓ CSS crítico inline, CSS async con onload
+  ✓ JS sin bloqueo (async o defer)
+
+ANIMACIONES:
+  ✓ Fade-in al entrar en viewport
+  ✓ Transiciones suaves (0.3-0.5s)
+  ✓ GPU acceleration (transform, opacity)
+
+ACCESIBILIDAD:
+  ✓ aria-label en todos los botones
+  ✓ Estructura semántica correcta
+  ✓ Contraste de colores adecuado
+  ✓ Focus visible en inputs/botones
+
+TESTING:
+  ✓ Responsive design (móvil, tablet, desktop)
+  ✓ Cross-browser (Chrome, Firefox, Safari, Edge)
+  ✓ Funcionalidad modales
+  ✓ Carrusel y swiper
+  ✓ Formularios y validación
+  ✓ Imágenes responsivas
+
+================================================================================
+DOCUMENTOS GENERADOS COMO REFERENCIA
+================================================================================
+
+1. e:\xampp8.20\htdocs\betoge\SPORT_TEMPLATE_ANALYSIS.md (773 líneas)
+   - Análisis detallado de cada sección
+   - Código HTML/CSS completo
+   - Variables CSS extensivas
+   - Explicación de componentes
+
+2. e:\xampp8.20\htdocs\betoge\SPORT_TEMPLATE_QUICK_REFERENCE.md (406 líneas)
+   - Guía rápida con referencias
+   - Tablas de colores, tamaños, espacios
+   - Estructura visual ASCII
+   - Checklist de implementación
+
+3. e:\xampp8.20\htdocs\betoge\RESUMEN_SPORT_TEMPLATE.txt (Este archivo)
+   - Resumen ejecutivo completo
+   - Información consolidada
+   - Especificaciones técnicas
+   - Instrucciones para crear templates Blade
+
+================================================================================
+FIN DEL ANÁLISIS
+Análisis completado: 2025-11-04
+Total de líneas analizadas: 8,318
+Documentos de referencia generados: 3
+================================================================================

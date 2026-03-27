@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(powershell:*)",
+      "Bash(mv:*)",
+      "Bash(echo $HOME)",
+      "Read(C:\\Users\\REALTECH\\.claude\\commands/**)",
+      "Read(C:\\Users\\REALTECH\\.claude\\commands/**)",
+      "Read(C:\\Users\\REALTECH\\.claude/**)",
+      "Read(C:\\Users\\REALTECH\\.claude\\commands/**)",
+      "Read(C:\\Users\\REALTECH\\.claude/**)",
+      "Bash(npm run dev:*)",
+      "Bash(php artisan:*)",
+      "Bash(rm:*)",
+      "WebFetch(domain:docs.wompi.co)",
+      "Bash(dir:*)",
+      "Bash(curl:*)",
+      "Bash(Select-Object -First 50)",
+      "Bash(findstr:*)",
+      "Bash(cat:*)",
+      "Bash(php:*)",
+      "Bash(Select-Object -First 5)",
+      "Bash(Select-Object -First 1)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(ls -lh \"e:\\\\xampp8.20\\\\htdocs\\\\esnova\\\\database\\\\migrations\"\" | grep -i \"2025 \")",
+      "Bash(php artisan migrate:*)",
+      "Bash(php artisan tinker --execute=\"DB::select\\(\"\"SHOW CREATE TABLE calificaciones_productos\"\"\\);\")",
+      "Bash(powershell -Command \"$input | Select-Object -Last 100\")",
+      "Bash(if not exist \"f:\\\\xamppPro80\\\\htdocs\\\\esnova\\\\public\\\\imagenes\\\\resenas\" mkdir \"f:\\\\xamppPro80\\\\htdocs\\\\esnova\\\\public\\\\imagenes\\\\resenas\")",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
