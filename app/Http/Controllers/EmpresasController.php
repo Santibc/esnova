@@ -98,6 +98,9 @@ class EmpresasController extends Controller
             'horario_atencion.*.cerrado'     => ['nullable', 'boolean'],
 
 
+            // Configuración de compras
+            'monto_minimo_compra' => ['nullable', 'numeric', 'min:0'],
+
             // Carrusel
             'carrusel.*.imagen'      => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:4096'],
             'carrusel.*.titulo'      => ['nullable', 'string', 'max:255'],

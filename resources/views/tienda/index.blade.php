@@ -397,7 +397,7 @@
 
             {{-- Columna izquierda: categoría destacada --}}
             <div class="col-lg-6">
-              <div class="category-featured" data-aos="fade-right" data-aos-delay="200">
+              <a href="{{ route('tienda.categorias', ['categoria' => $featured->id]) }}" class="category-featured" data-aos="fade-right" data-aos-delay="200" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
                 @if($featured && $featured->imagen)
                   <div class="category-image">
                     <img
@@ -411,11 +411,11 @@
                   <span class="category-tag">Destacado</span>
                   <h2>{{ $featured->nombre }}</h2>
                   <p>{{ $featured->descripcion ?? 'Descubre nuestra selección de productos en esta categoría.' }}</p>
-                  <a href="{{ route('tienda.categorias', ['categoria' => $featured->id]) }}" class="btn-shop">
+                  <span class="btn-shop">
                     Explorar Categoría <i class="bi bi-arrow-right"></i>
-                  </a>
+                  </span>
                 </div>
-              </div>
+              </a>
             </div>
 
             {{-- Columna derecha: hasta 4 categorías en grid 2x2 --}}
@@ -427,7 +427,7 @@
                     $delay = 300 + ($i * 100);
                   @endphp
                   <div class="col-xl-6">
-                    <div class="category-card {{ $catColor }} {{ !$categoria->imagen ? 'no-image' : '' }}" data-aos="fade-up" data-aos-delay="{{ $delay }}">
+                    <a href="{{ route('tienda.categorias', ['categoria' => $categoria->id]) }}" class="category-card {{ $catColor }} {{ !$categoria->imagen ? 'no-image' : '' }}" data-aos="fade-up" data-aos-delay="{{ $delay }}" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
                       @if($categoria->imagen)
                         <div class="category-image">
                           <img
@@ -440,11 +440,11 @@
                       <div class="category-content">
                         <h4>{{ $categoria->nombre }}</h4>
                         <p>{{ $categoria->productos_count ?? 0 }} productos</p>
-                        <a href="{{ route('tienda.categorias', ['categoria' => $categoria->id]) }}" class="card-link">
+                        <span class="card-link">
                           Ver Productos <i class="bi bi-arrow-right"></i>
-                        </a>
+                        </span>
                       </div>
-                    </div>
+                    </a>
                   </div>
                 @endforeach
               </div>

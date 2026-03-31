@@ -57,7 +57,7 @@ class SitemapService
 
             // Productos activos
             $productos = Producto::where('empresa_id', $empresa->id)
-                ->where('activo', true)
+                ->activos()
                 ->orderBy('nombre')
                 ->get();
 

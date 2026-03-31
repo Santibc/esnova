@@ -274,6 +274,27 @@
         </div>
       </div>
 
+      {{-- Configuración de Compras --}}
+      <div class="card shadow mb-4">
+        <div class="card-header">
+          <h5 class="mb-0">Configuración de Compras</h5>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Monto Mínimo de Compra (COP)</label>
+              <div class="input-group">
+                <span class="input-group-text">$</span>
+                <input type="number" name="monto_minimo_compra" class="form-control"
+                       value="{{ old('monto_minimo_compra', $empresa->monto_minimo_compra ?? 60000) }}"
+                       min="0" step="1000">
+              </div>
+              <small class="text-muted">Valor mínimo que debe alcanzar el carrito para proceder al pago. Dejar en 0 para desactivar.</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {{-- Horario de Atención --}}
       <div class="card shadow mb-4">
         <div class="card-header">

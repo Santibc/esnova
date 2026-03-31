@@ -14,6 +14,7 @@ class CaracteristicaProducto extends Model
     protected $fillable = [
         'producto_id',
         'icono',
+        'imagen',
         'titulo',
         'descripcion',
         'orden'
@@ -37,6 +38,22 @@ class CaracteristicaProducto extends Model
     public function scopeOrdenado($query)
     {
         return $query->orderBy('orden');
+    }
+
+    /**
+     * URL completa de la imagen de la característica
+     */
+    public function getImagenUrlAttribute()
+    {
+        return $this->imagen ? asset($this->imagen) : null;
+    }
+
+    /**
+     * Verificar si tiene imagen asignada
+     */
+    public function getTieneImagenAttribute()
+    {
+        return !empty($this->imagen);
     }
 
     /**

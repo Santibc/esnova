@@ -30,7 +30,8 @@ class Producto extends Model
         'permitir_venta_sin_stock',
         'info_envio',
         'dias_devolucion',
-        'garantia'
+        'garantia',
+        'orden'
     ];
 
     protected $casts = [

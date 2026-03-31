@@ -92,6 +92,7 @@ Route::prefix('productos')->middleware(['auth', 'verificar.empresa', 'verificar.
     Route::get('/{producto}/variantes-ajax', [ProductosController::class, 'variantesAjax'])->name('productos.variantes-ajax');
     Route::get('/{producto}/imagenes-ajax', [ProductosController::class, 'imagenesAjax'])->name('productos.imagenes-ajax');
     Route::get('/{producto}/precios-ajax', [ProductosController::class, 'preciosAjax'])->name('productos.precios-ajax');
+    Route::get('/{producto}/logs-ajax', [ProductosController::class, 'logsAjax'])->name('productos.logs-ajax');
 });
 
 // Rutas de Descuentos

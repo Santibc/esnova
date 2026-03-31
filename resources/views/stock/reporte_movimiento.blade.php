@@ -30,15 +30,15 @@
             <div class="row">
               <div class="col-md-3 mb-3">
                 <label class="form-label">Fecha Inicio</label>
-                <input type="date" name="fecha_inicio" class="form-control" 
-                       value="{{ request('fecha_inicio', $fechaInicio->format('Y-m-d')) }}"
+                <input type="date" name="fecha_inicio" class="form-control"
+                       value="{{ request('fecha_inicio', $fechaInicio ? $fechaInicio->format('Y-m-d') : '') }}"
                        max="{{ date('Y-m-d') }}">
               </div>
               
               <div class="col-md-3 mb-3">
                 <label class="form-label">Fecha Fin</label>
-                <input type="date" name="fecha_fin" class="form-control" 
-                       value="{{ request('fecha_fin', $fechaFin->format('Y-m-d')) }}"
+                <input type="date" name="fecha_fin" class="form-control"
+                       value="{{ request('fecha_fin', $fechaFin ? $fechaFin->format('Y-m-d') : '') }}"
                        max="{{ date('Y-m-d') }}">
               </div>
               
@@ -149,7 +149,7 @@
         <div class="card-header">
           <h5 class="mb-0">
             <i class="bi bi-list"></i> 
-            Detalle de Movimientos ({{ $fechaInicio->format('d/m/Y') }} - {{ $fechaFin->format('d/m/Y') }})
+            Detalle de Movimientos{{ $fechaInicio || $fechaFin ? ' (' . ($fechaInicio ? $fechaInicio->format('d/m/Y') : 'Inicio') . ' - ' . ($fechaFin ? $fechaFin->format('d/m/Y') : 'Hoy') . ')' : '' }}
           </h5>
         </div>
         <div class="card-body">
@@ -283,9 +283,9 @@
         language: { url: '{{ asset("js/datatables/es-ES.json") }}' },
         order: [[0, 'desc']],
         pageLength: 25,
-        dom: 'Bfrtip',
+        dom: 'lBfrtip',
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Todos"]],
         buttons: [
-          'pageLength',
           'excel',
           'pdf',
           'print'

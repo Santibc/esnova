@@ -4,6 +4,22 @@
 @section('description', $producto->descripcion)
 @section('body-class', 'product-details-page')
 
+@section('seo_extras')
+{{-- Open Graph --}}
+<meta property="og:type" content="product">
+<meta property="og:title" content="{{ $producto->nombre }} - {{ $empresa->nombre }}">
+<meta property="og:description" content="{{ Str::limit(strip_tags($producto->descripcion), 155) }}">
+<meta property="og:url" content="{{ route('tienda.producto', Str::slug($producto->nombre)) }}">
+<meta property="og:image" content="{{ $producto->url_imagen_principal }}">
+<meta property="og:site_name" content="{{ $empresa->nombre }}">
+
+{{-- Twitter Card --}}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $producto->nombre }} - {{ $empresa->nombre }}">
+<meta name="twitter:description" content="{{ Str::limit(strip_tags($producto->descripcion), 155) }}">
+<meta name="twitter:image" content="{{ $producto->url_imagen_principal }}">
+@endsection
+
 @push('styles')
 <style>
   /* Estilos para botones de reaccion */
@@ -548,6 +564,92 @@ nav[role="navigation"] > div > span.relative.z-0 > a:first-child,
 nav[role="navigation"] > div > span.relative.z-0 > a:last-child {
   font-size: 0 !important;
 }
+
+/* ===== Apple-Style Features Section ===== */
+.apple-features-section {
+  padding: 0.5rem 0;
+}
+
+.apple-features-list {
+  padding: 0 0.5rem;
+}
+
+.apple-feature-item {
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  padding: 1rem 0;
+  transition: background 0.3s;
+}
+
+.apple-feature-item:first-child {
+  border-top: 1px solid #e0e0e0;
+}
+
+.apple-feature-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.apple-feature-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  transition: background 0.3s;
+}
+
+.apple-feature-item.active .apple-feature-icon {
+  background: var(--accent-color, #0071e3);
+}
+
+.apple-feature-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1d1d1f;
+}
+
+.apple-feature-body {
+  padding: 0.75rem 0 0.25rem 2.75rem;
+  animation: appleSlideDown 0.35s ease-out;
+}
+
+.apple-feature-body p {
+  color: #6e6e73;
+  font-size: 0.93rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+@keyframes appleSlideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Badge en thumbnails de características */
+.thumbnail-caract {
+  position: relative;
+}
+.thumbnail-caract-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  background: rgba(0, 113, 227, 0.85);
+  color: #fff;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+}
 </style>
 @endpush
 
@@ -620,7 +722,7 @@ nav[role="navigation"] > div > span.relative.z-0 > a:last-child {
                        id="main-product-image" 
                        data-zoom="{{ $producto->url_imagen_principal ?? asset('assets/img/product/placeholder.webp') }}">
 
-                  @if($producto->imagenes->count() > 1)
+                  @if($producto->imagenes->count() > 1 || $producto->caracteristicas->where('imagen', '!=', null)->count() > 0)
                   <div class="image-navigation">
                     <button class="nav-arrow prev-image image-nav-btn prev-image" type="button" onclick="navigateImages(-1)">
                       <i class="bi bi-chevron-left"></i>
@@ -636,11 +738,23 @@ nav[role="navigation"] > div > span.relative.z-0 > a:last-child {
               @if($producto->imagenes->count() > 0)
               <div class="thumbnail-grid">
                 @foreach($producto->imagenes as $index => $imagen)
-                <div class="thumbnail-wrapper thumbnail-item {{ $loop->first ? 'active' : '' }}" 
-                     data-image="{{ $imagen->url }}"
+                <div class="thumbnail-wrapper thumbnail-item {{ $loop->first ? 'active' : '' }}"
+                     data-image="{{ $imagen->url }}" data-type="product"
                      onclick="changeMainImage('{{ $imagen->url }}', this)">
                   <img src="{{ $imagen->url }}" alt="{{ $producto->nombre }} - Vista {{ $loop->iteration }}" class="img-fluid">
                 </div>
+                @endforeach
+                {{-- Thumbnails de características con imagen --}}
+                @foreach($producto->caracteristicas as $i => $c)
+                  @if($c->tiene_imagen)
+                <div class="thumbnail-wrapper thumbnail-item thumbnail-caract"
+                     data-image="{{ $c->imagen_url }}" data-type="feature" data-feature="{{ $i }}"
+                     onclick="changeMainImage('{{ $c->imagen_url }}', this)"
+                     title="{{ $c->titulo }}">
+                  <img src="{{ $c->imagen_url }}" alt="{{ $c->titulo }}" class="img-fluid">
+                  <span class="thumbnail-caract-badge"><i class="bi bi-stars"></i></span>
+                </div>
+                  @endif
                 @endforeach
               </div>
               @else
@@ -858,6 +972,30 @@ nav[role="navigation"] > div > span.relative.z-0 > a:last-child {
                 @endif
               </div>
               @endif
+
+              {{-- Características del producto (estilo Apple) --}}
+              @if($producto->caracteristicas->count() > 0)
+              <div class="apple-features-section mt-4">
+                <h6 class="mb-3" style="font-weight: 700; color: #1d1d1f;">Características Principales</h6>
+                <div class="apple-features-list">
+                  @foreach($producto->caracteristicas as $i => $c)
+                  <div class="apple-feature-item"
+                       data-feature="{{ $i }}"
+                       @if($c->tiene_imagen) data-image-url="{{ $c->imagen_url }}" @endif>
+                    <div class="apple-feature-header">
+                      <span class="apple-feature-icon">
+                        <i class="bi bi-plus"></i>
+                      </span>
+                      <span class="apple-feature-title">{{ $c->titulo }}</span>
+                    </div>
+                    <div class="apple-feature-body" style="display:none">
+                      <p>{{ $c->descripcion }}</p>
+                    </div>
+                  </div>
+                  @endforeach
+                </div>
+              </div>
+              @endif
             </div>
           </div>
         </div>
@@ -882,18 +1020,6 @@ nav[role="navigation"] > div > span.relative.z-0 > a:last-child {
                           <h3>Descripción del Producto</h3>
                           <p>{{ $producto->descripcion ?: 'No hay descripción disponible para este producto.' }}</p>
 
-                          @if($producto->caracteristicas->count() > 0)
-                          <h4>Características Principales</h4>
-                          <div class="highlights-grid">
-                            @foreach($producto->caracteristicas as $caracteristica)
-                            <div class="highlight-card">
-                              <i class="{{ $caracteristica->icono_clase }}"></i>
-                              <h5>{{ $caracteristica->titulo }}</h5>
-                              <p>{{ $caracteristica->descripcion }}</p>
-                            </div>
-                            @endforeach
-                          </div>
-                          @endif
                         </div>
                       </div>
 
@@ -1548,6 +1674,59 @@ nav[role="navigation"] > div > span.relative.z-0 > a:last-child {
 
 @push('scripts')
 <script>
+  // === Apple-Style Features Accordion ===
+  document.querySelectorAll('.apple-feature-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      var featureIndex = this.dataset.feature;
+      var isActive = this.classList.contains('active');
+      var imageUrl = this.dataset.imageUrl;
+
+      // Cerrar todos
+      document.querySelectorAll('.apple-feature-item').forEach(function(el) {
+        el.classList.remove('active');
+        el.querySelector('.apple-feature-body').style.display = 'none';
+        el.querySelector('.apple-feature-icon i').className = 'bi bi-plus';
+      });
+
+      // Abrir el seleccionado (si no estaba activo)
+      if (!isActive) {
+        this.classList.add('active');
+        this.querySelector('.apple-feature-body').style.display = 'block';
+        this.querySelector('.apple-feature-icon i').className = 'bi bi-dash';
+
+        // Cambiar imagen principal y activar thumbnail correspondiente
+        if (imageUrl) {
+          var thumb = document.querySelector('.thumbnail-caract[data-feature="' + featureIndex + '"]');
+          if (thumb) {
+            changeMainImage(imageUrl, thumb);
+          } else {
+            // Si no hay thumbnail, cambiar directamente
+            $('#main-product-image').attr('src', imageUrl).attr('data-zoom', imageUrl);
+            $('.thumbnail-item').removeClass('active');
+          }
+        }
+      } else {
+        // Al cerrar, volver a la primera imagen del producto
+        var firstThumb = document.querySelector('.thumbnail-item[data-type="product"]');
+        if (firstThumb) {
+          changeMainImage(firstThumb.dataset.image, firstThumb);
+        }
+      }
+    });
+  });
+
+  // Sincronizar: al hacer clic en thumbnail de característica, abrir su acordeón
+  document.querySelectorAll('.thumbnail-caract').forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      var featureIndex = this.dataset.feature;
+      var featureItem = document.querySelector('.apple-feature-item[data-feature="' + featureIndex + '"]');
+      if (featureItem && !featureItem.classList.contains('active')) {
+        featureItem.click();
+      }
+    });
+  });
+</script>
+<script>
   // === Variantes disponibles del producto (JSON) ===
   const variantes = @json($producto->variantes);
   const tieneVariantes = {{ $producto->tiene_variantes ? 'true' : 'false' }};
@@ -1556,6 +1735,14 @@ nav[role="navigation"] > div > span.relative.z-0 > a:last-child {
   let selectedColor = null;
   let currentImageIndex = 0;
   const productImages = @json($producto->imagenes->pluck('url'));
+  @if($producto->caracteristicas->count() > 0)
+  // Agregar imágenes de características al array de navegación
+  @foreach($producto->caracteristicas as $c)
+    @if($c->tiene_imagen)
+  productImages.push(@json($c->imagen_url));
+    @endif
+  @endforeach
+  @endif
 
   $(document).ready(function() {
     // Inicializar Drift zoom si está disponible

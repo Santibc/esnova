@@ -505,14 +505,21 @@ class StockController extends Controller
                            ->with('warning', 'Debe crear su empresa antes de ver reportes.');
         }
 
-        $fechaInicio = $request->fecha_inicio ? Carbon::parse($request->fecha_inicio) : Carbon::now()->subMonth();
-        $fechaFin = $request->fecha_fin ? Carbon::parse($request->fecha_fin) : Carbon::now();
-        
+        $fechaInicio = $request->fecha_inicio ? Carbon::parse($request->fecha_inicio) : null;
+        $fechaFin = $request->fecha_fin ? Carbon::parse($request->fecha_fin) : null;
+
         $movimientos = MovimientoStock::with(['producto', 'variante', 'usuario'])
             ->whereHas('producto', function($q) use ($empresa) {
                 $q->where('empresa_id', $empresa->id)->noEliminados();
-            })
-            ->whereBetween('created_at', [$fechaInicio, $fechaFin]);
+            });
+
+        if ($fechaInicio && $fechaFin) {
+            $movimientos->whereBetween('created_at', [$fechaInicio, $fechaFin]);
+        } elseif ($fechaInicio) {
+            $movimientos->where('created_at', '>=', $fechaInicio);
+        } elseif ($fechaFin) {
+            $movimientos->where('created_at', '<=', $fechaFin);
+        }
         
         if ($request->producto_id) {
             // Verificar que el producto sea de la empresa

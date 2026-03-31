@@ -130,10 +130,10 @@ class TiendaController extends Controller
                     $query->orderBy('nombre');
                     break;
                 default:
-                    $query->latest();
+                    $query->orderBy('orden')->latest();
             }
         } else {
-            $query->latest();
+            $query->orderBy('orden')->latest();
         }
 
         // Filtro de stock
@@ -290,7 +290,15 @@ class TiendaController extends Controller
             ->first(fn($p) => Str::slug($p->nombre) === $slug);
 
         if (!$producto) {
-            abort(404);
+            // Verificar si el producto existe pero fue eliminado → 410 Gone para SEO
+            $productoEliminado = Producto::where('empresa_id', $empresa->id)
+                ->where(function ($q) {
+                    $q->where('eliminado', true)->orWhere('activo', false);
+                })
+                ->get()
+                ->first(fn($p) => Str::slug($p->nombre) === $slug);
+
+            abort($productoEliminado ? 410 : 404);
         }
 
         // Obtener primera lista de precios
@@ -564,6 +572,14 @@ class TiendaController extends Controller
                 ->with('error', 'El carrito está vacío');
         }
 
+        // Validar monto mínimo de compra
+        $montoMinimo = $empresa->monto_minimo_compra ?? 0;
+        $totalCarrito = $carrito->total ?? $carrito->subtotal;
+        if ($montoMinimo > 0 && $totalCarrito < $montoMinimo) {
+            return redirect()->route('tienda.carrito')
+                ->with('error', 'El monto mínimo de compra es $' . number_format($montoMinimo, 0, ',', '.') . '. Tu carrito actual es $' . number_format($totalCarrito, 0, ',', '.') . '.');
+        }
+
         // Validar stock antes de permitir checkout
         $stockErrors = [];
         foreach ($carrito->items as $key => $item) {
@@ -655,6 +671,14 @@ public function procesarCompra(Request $request)
     if (empty($carrito->items)) {
         return redirect()->route('tienda.carrito')
             ->with('error', 'El carrito está vacío');
+    }
+
+    // Validar monto mínimo de compra
+    $montoMinimo = $empresa->monto_minimo_compra ?? 0;
+    $totalCarrito = $carrito->total ?? $carrito->subtotal;
+    if ($montoMinimo > 0 && $totalCarrito < $montoMinimo) {
+        return redirect()->route('tienda.carrito')
+            ->with('error', 'El monto mínimo de compra es $' . number_format($montoMinimo, 0, ',', '.') . '. Tu carrito actual es $' . number_format($totalCarrito, 0, ',', '.') . '.');
     }
 
     DB::beginTransaction();

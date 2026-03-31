@@ -139,6 +139,7 @@ class ProductosController extends Controller
                         $buttons .= '<button type="button" class="btn btn-outline-warning btn-sm" title="Ver Stock" onclick="verStock('.$p->id.')"><i class="bi bi-box-seam"></i></button>';
                     }
 
+                    $buttons .= '<button type="button" class="btn btn-outline-dark btn-sm" title="Ver Logs" onclick="verLogs('.$p->id.')"><i class="bi bi-clock-history"></i></button>';
                     $buttons .= '<button type="button" class="btn btn-outline-danger btn-sm" title="Eliminar" onclick="eliminarProducto('.$p->id.', \''.addslashes($p->nombre).'\')"><i class="bi bi-trash"></i></button>';
 
                     $buttons .= '</div>';
@@ -267,6 +268,7 @@ class ProductosController extends Controller
             'info_envio' => ['nullable','string','max:255'],
             'dias_devolucion' => ['nullable','string','max:255'],
             'garantia' => ['nullable','string','max:255'],
+            'orden' => ['nullable','integer','min:0'],
             'variantes.*.talla' => ['nullable','string','max:50'],
             'variantes.*.color' => ['nullable','string','max:50'],
             'variantes.*.sku'   => ['nullable','string','max:255','distinct'],
@@ -306,12 +308,42 @@ class ProductosController extends Controller
             $data['permitir_venta_sin_stock'] = $request->input('permitir_venta_sin_stock', 0) == 1;
             $data['activo'] = true;
             $data['empresa_id'] = $empresa->id;
-            
+
             $esNuevo = !$producto->exists;
+
+            // Snapshot para auditoría
+            $camposAuditar = ['referencia','nombre','descripcion','unidad_venta','unidad_empaque',
+                'extension','categoria_id','activo','tiene_variantes','controlar_stock',
+                'permitir_venta_sin_stock','info_envio','dias_devolucion','garantia','orden'];
+            $oldValues = $esNuevo ? [] : $producto->only($camposAuditar);
+            $oldCategoriaName = !$esNuevo && $producto->categoria ? $producto->categoria->nombre : null;
+
             $producto->fill($data)->save();
+
+            // Registrar logs de campos básicos
+            if ($esNuevo) {
+                $this->registrarLog($producto->id, 'Producto creado: ' . $producto->nombre);
+            } else {
+                foreach ($camposAuditar as $campo) {
+                    $viejo = $oldValues[$campo] ?? null;
+                    $nuevo = $producto->$campo;
+                    if ((string)$viejo !== (string)$nuevo) {
+                        if ($campo === 'categoria_id') {
+                            $nuevaCat = Categoria::find($nuevo);
+                            $this->registrarLog($producto->id, 'Categoría modificada', $oldCategoriaName ?? (string)$viejo, $nuevaCat->nombre ?? (string)$nuevo);
+                        } else {
+                            $this->registrarLog($producto->id, "Campo '{$campo}' modificado", (string)$viejo, (string)$nuevo);
+                        }
+                    }
+                }
+            }
             
             // Guardar variantes
             if ($producto->tiene_variantes && $request->has('variantes')) {
+                // Snapshot variantes para auditoría
+                $oldVariantesCount = $producto->variantes()->count();
+                $oldVariantesList = $producto->variantes()->get()->map(fn($v) => $v->sku . ' (' . trim(($v->talla ?? '') . '/' . ($v->color ?? ''), '/') . ')')->implode(', ');
+
                 if ($request->id) {
                     $variantesIds = $producto->variantes()->pluck('id');
                     StockProducto::whereIn('variante_producto_id', $variantesIds)
@@ -372,6 +404,13 @@ class ProductosController extends Controller
                             }
                         }
                     }
+                }
+
+                // Log de variantes
+                $newVariantesCount = $producto->variantes()->count();
+                $newVariantesList = $producto->variantes()->get()->map(fn($v) => $v->sku . ' (' . trim(($v->talla ?? '') . '/' . ($v->color ?? ''), '/') . ')')->implode(', ');
+                if ($oldVariantesCount !== $newVariantesCount || $oldVariantesList !== $newVariantesList) {
+                    $this->registrarLog($producto->id, "Variantes actualizadas ({$oldVariantesCount} → {$newVariantesCount})", $oldVariantesList ?: null, $newVariantesList ?: null);
                 }
             } else if ($producto->controlar_stock && !$producto->tiene_variantes) {
                 $stockInicial = $request->input('stock_inicial', 0);
@@ -437,6 +476,8 @@ class ProductosController extends Controller
                         'es_principal' => $index == $imagenPrincipalNueva,
                         'orden' => $orden
                     ]);
+
+                    $this->registrarLog($producto->id, 'Imagen agregada: ' . $imagen->getClientOriginalName(), null, $path);
                 }
             }
             
@@ -446,6 +487,9 @@ class ProductosController extends Controller
                 $producto->imagenes()
                         ->where('id', $request->imagen_principal_existente)
                         ->update(['es_principal' => true]);
+
+                $imgPrincipal = ImagenProducto::find($request->imagen_principal_existente);
+                $this->registrarLog($producto->id, 'Imagen principal cambiada', null, $imgPrincipal ? basename($imgPrincipal->ruta_imagen) : 'ID: ' . $request->imagen_principal_existente);
             }
             
             // Eliminar imágenes marcadas
@@ -453,52 +497,130 @@ class ProductosController extends Controller
                 foreach ($request->eliminar_imagenes as $imagenId) {
                     $imagen = ImagenProducto::find($imagenId);
                     if ($imagen && $imagen->producto_id == $producto->id) {
-                        $filePath = public_path($imagen->ruta_imagen);
+                        $rutaImagen = $imagen->ruta_imagen;
+                        $filePath = public_path($rutaImagen);
                         if (File::exists($filePath)) {
                             File::delete($filePath);
                         }
                         $imagen->delete();
+
+                        $this->registrarLog($producto->id, 'Imagen eliminada: ' . basename($rutaImagen), $rutaImagen, null);
                     }
                 }
             }
             
             // Guardar precios
             if ($request->has('precios')) {
+                $oldPrecios = $producto->precios()->pluck('precio', 'lista_precio_id');
+
                 foreach ($request->precios as $listaId => $precio) {
+                    $precioAnterior = $oldPrecios->get($listaId);
+                    $listaNombre = ListaPrecio::find($listaId)?->nombre ?? "Lista #{$listaId}";
+
                     if (!empty($precio)) {
                         $producto->precios()->updateOrCreate(
                             ['lista_precio_id' => $listaId],
                             ['precio' => $precio, 'activo' => true]
                         );
+
+                        if ($precioAnterior === null) {
+                            $this->registrarLog($producto->id, "Precio agregado ({$listaNombre})", null, (string)$precio);
+                        } elseif ((float)$precioAnterior !== (float)$precio) {
+                            $this->registrarLog($producto->id, "Precio modificado ({$listaNombre})", (string)$precioAnterior, (string)$precio);
+                        }
                     } else {
                         $producto->precios()
                                 ->where('lista_precio_id', $listaId)
                                 ->delete();
+
+                        if ($precioAnterior !== null) {
+                            $this->registrarLog($producto->id, "Precio eliminado ({$listaNombre})", (string)$precioAnterior, null);
+                        }
                     }
                 }
             }
 
             // Guardar/Actualizar/Eliminar Características
+            $oldCaractImages = $producto->caracteristicas()->pluck('imagen')->filter()->toArray();
+            $oldCaractTitulos = $producto->caracteristicas()->pluck('titulo')->filter()->toArray();
+
             if ($request->has('caracteristicas')) {
-                // Eliminar características existentes
                 $producto->caracteristicas()->delete();
 
-                // Guardar nuevas características
                 $orden = 0;
-                foreach ($request->caracteristicas as $caracteristicaData) {
-                    // Solo guardar si tiene título y descripción
-                    if (!empty($caracteristicaData['titulo']) && !empty($caracteristicaData['descripcion'])) {
-                        $orden++;
-                        $producto->caracteristicas()->create([
-                            'icono' => $caracteristicaData['icono'] ?? 'bi-star',
-                            'titulo' => $caracteristicaData['titulo'],
-                            'descripcion' => $caracteristicaData['descripcion'],
-                            'orden' => $orden
-                        ]);
+                $newImages = [];
+                $caractDir = public_path("imagenes/productos/{$producto->id}/caracteristicas");
+
+                foreach ($request->caracteristicas as $index => $caracteristicaData) {
+                    if (empty($caracteristicaData['titulo']) && empty($caracteristicaData['descripcion'])) {
+                        continue;
+                    }
+                    $orden++;
+
+                    $imagenPath = $caracteristicaData['imagen_actual'] ?? null;
+
+                    // Nueva imagen subida
+                    if ($request->hasFile("caracteristicas.{$index}.imagen")) {
+                        if ($imagenPath && File::exists(public_path($imagenPath))) {
+                            File::delete(public_path($imagenPath));
+                        }
+                        if (!File::exists($caractDir)) {
+                            File::makeDirectory($caractDir, 0755, true);
+                        }
+                        $file = $request->file("caracteristicas.{$index}.imagen");
+                        $filename = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
+                        $file->move($caractDir, $filename);
+                        $imagenPath = "imagenes/productos/{$producto->id}/caracteristicas/{$filename}";
+                    }
+
+                    // Eliminar imagen si se marcó checkbox
+                    if (!empty($caracteristicaData['eliminar_imagen'])) {
+                        if ($imagenPath && File::exists(public_path($imagenPath))) {
+                            File::delete(public_path($imagenPath));
+                        }
+                        $imagenPath = null;
+                    }
+
+                    if ($imagenPath) {
+                        $newImages[] = $imagenPath;
+                    }
+
+                    $producto->caracteristicas()->create([
+                        'icono' => $caracteristicaData['icono'] ?? 'bi-star',
+                        'imagen' => $imagenPath,
+                        'titulo' => $caracteristicaData['titulo'],
+                        'descripcion' => $caracteristicaData['descripcion'],
+                        'orden' => $orden
+                    ]);
+                }
+
+                // Limpiar imágenes huérfanas
+                foreach ($oldCaractImages as $oldImg) {
+                    if (!in_array($oldImg, $newImages) && File::exists(public_path($oldImg))) {
+                        File::delete(public_path($oldImg));
                     }
                 }
+
+                // Log de características
+                $newCaractTitulos = $producto->caracteristicas()->pluck('titulo')->filter()->toArray();
+                $eliminadas = array_diff($oldCaractTitulos, $newCaractTitulos);
+                $agregadas = array_diff($newCaractTitulos, $oldCaractTitulos);
+                foreach ($eliminadas as $titulo) {
+                    $this->registrarLog($producto->id, 'Característica eliminada', $titulo, null);
+                }
+                foreach ($agregadas as $titulo) {
+                    $this->registrarLog($producto->id, 'Característica agregada', null, $titulo);
+                }
             } else {
-                // Si no se enviaron características, eliminar todas las existentes
+                // Eliminar todas las características e imágenes
+                foreach ($oldCaractImages as $oldImg) {
+                    if (File::exists(public_path($oldImg))) {
+                        File::delete(public_path($oldImg));
+                    }
+                }
+                if (!empty($oldCaractTitulos)) {
+                    $this->registrarLog($producto->id, 'Todas las características eliminadas', implode(', ', $oldCaractTitulos), null);
+                }
                 $producto->caracteristicas()->delete();
             }
 
@@ -730,6 +852,52 @@ public function actualizarPreciosExcel(Request $request)
     }
 
     /**
+     * Obtener logs de auditoría de un producto vía AJAX
+     */
+    public function logsAjax(Producto $producto)
+    {
+        if ($producto->empresa_id !== auth()->user()->empresa->id) {
+            abort(403);
+        }
+
+        $logs = \App\Models\Log::where('tabla', 'productos')
+            ->where('id_tabla', $producto->id)
+            ->with('usuario')
+            ->orderByDesc('created_at')
+            ->get();
+
+        $html = '<div class="table-responsive" style="max-height:400px; overflow-y:auto;">';
+
+        if ($logs->isEmpty()) {
+            $html .= '<div class="text-center py-4">';
+            $html .= '<i class="bi bi-clock-history" style="font-size:2rem; color:#6c757d;"></i>';
+            $html .= '<p class="text-muted mt-2">No hay registros de cambios para este producto.</p>';
+            $html .= '</div>';
+        } else {
+            $html .= '<table class="table table-striped table-sm">';
+            $html .= '<thead class="table-dark"><tr>';
+            $html .= '<th>Fecha</th><th>Usuario</th><th>Detalle</th><th>Valor Anterior</th><th>Valor Nuevo</th>';
+            $html .= '</tr></thead><tbody>';
+
+            foreach ($logs as $log) {
+                $html .= '<tr>';
+                $html .= '<td><small>' . $log->created_at->format('d/m/Y H:i:s') . '</small></td>';
+                $html .= '<td><small>' . e($log->usuario->name ?? 'Sistema') . '</small></td>';
+                $html .= '<td>' . e($log->detalle) . '</td>';
+                $html .= '<td><small class="text-danger">' . e($log->valor_viejo ?? '-') . '</small></td>';
+                $html .= '<td><small class="text-success">' . e($log->valor_nuevo ?? '-') . '</small></td>';
+                $html .= '</tr>';
+            }
+
+            $html .= '</tbody></table>';
+        }
+
+        $html .= '</div>';
+
+        return response($html);
+    }
+
+    /**
      * Eliminar producto lógicamente
      */
     public function eliminar(Request $request)
@@ -754,6 +922,8 @@ public function actualizarPreciosExcel(Request $request)
             // Realizar eliminación lógica
             $producto->update(['eliminado' => true]);
 
+            $this->registrarLog($producto->id, 'Producto eliminado: ' . $producto->nombre, 'activo', 'eliminado');
+
             return response()->json([
                 'success' => true,
                 'message' => 'Producto eliminado correctamente. Los registros de compras se han preservado.'
@@ -763,5 +933,22 @@ public function actualizarPreciosExcel(Request $request)
                 'error' => 'Error al eliminar el producto: ' . $e->getMessage()
             ], 500);
         }
+    }
+
+    /**
+     * Registrar un log de auditoría para productos
+     */
+    private function registrarLog(int $productoId, string $detalle, ?string $valorViejo = null, ?string $valorNuevo = null): void
+    {
+        \App\Models\Log::create([
+            'id_tabla'    => $productoId,
+            'tabla'       => 'productos',
+            'detalle'     => $detalle,
+            'tipo_log'    => '1',
+            'valor_viejo' => $valorViejo ? \Illuminate\Support\Str::limit($valorViejo, 250, '') : null,
+            'valor_nuevo' => $valorNuevo ? \Illuminate\Support\Str::limit($valorNuevo, 250, '') : null,
+            'id_usuario'  => auth()->id(),
+            'estado'      => true,
+        ]);
     }
 }

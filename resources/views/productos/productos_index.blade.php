@@ -146,6 +146,15 @@
     });
   }
 
+  // Función para ver logs de auditoría
+  function verLogs(productoId) {
+    $('#modalLogsContent').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Cargando...</span></div></div>');
+    $('#modalLogs').modal('show');
+    $.get(`/productos/${productoId}/logs-ajax`, function(data) {
+      $('#modalLogsContent').html(data);
+    });
+  }
+
   // Función para eliminar producto
   function eliminarProducto(productoId, productoNombre) {
     Swal.fire({
@@ -301,6 +310,28 @@
               <span class="visually-hidden">Cargando...</span>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para ver logs de auditoría -->
+  <div class="modal fade" id="modalLogs" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-clock-history"></i> Historial de Cambios del Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modalLogsContent">
+          <div class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>

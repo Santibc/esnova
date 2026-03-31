@@ -41,7 +41,8 @@ class Empresa extends Model
         'banner_btn1_texto',
         'banner_btn1_link',
         'banner_btn2_texto',
-        'banner_btn2_link'
+        'banner_btn2_link',
+        'monto_minimo_compra'
     ];
 
     protected $casts = [

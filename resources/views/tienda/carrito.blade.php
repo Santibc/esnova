@@ -514,7 +514,15 @@
                             <span id="summaryTotal">${{ number_format($carrito->total ?? $carrito->subtotal, 0, ',', '.') }}</span>
                         </div>
                         
-                        <button id="checkoutBtn" class="btn btn-checkout" onclick="validateAndProceedToCheckout()">
+                        @if(($empresa->monto_minimo_compra ?? 0) > 0)
+                        <div id="minOrderAlert" class="alert alert-warning small mt-2 mb-2 {{ ($carrito->total ?? $carrito->subtotal) >= $empresa->monto_minimo_compra ? 'd-none' : '' }}">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            El monto mínimo de compra es <strong>${{ number_format($empresa->monto_minimo_compra, 0, ',', '.') }}</strong>
+                        </div>
+                        @endif
+
+                        <button id="checkoutBtn" class="btn btn-checkout" onclick="validateAndProceedToCheckout()"
+                            @if(($empresa->monto_minimo_compra ?? 0) > 0 && ($carrito->total ?? $carrito->subtotal) < $empresa->monto_minimo_compra) disabled @endif>
                             <span id="checkoutBtnText">Proceder al Pago</span>
                             <span id="checkoutSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
                         </button>
@@ -546,6 +554,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <script>
+        const montoMinimoCompra = {{ $empresa->monto_minimo_compra ?? 0 }};
+
         $(document).ready(function() {
             // CSRF Token
             $.ajaxSetup({
@@ -643,11 +653,33 @@
             
             $('#summarySubtotal').text(formattedSubtotal);
             $('#summaryTotal').text(formattedSubtotal);
-            
+
             // Update header cart count
             if (data.total_items > 0) {
                 const itemText = data.total_items === 1 ? 'producto' : 'productos';
                 $('.cart-title span').text(`(${data.total_items} ${itemText})`);
+            }
+
+            // Validar monto mínimo
+            checkMinimumOrder(data.subtotal);
+        }
+
+        // Verificar si el monto cumple con el mínimo de compra
+        function checkMinimumOrder(subtotal) {
+            if (montoMinimoCompra <= 0) return;
+
+            const checkoutBtn = $('#checkoutBtn');
+            const minOrderAlert = $('#minOrderAlert');
+
+            if (subtotal < montoMinimoCompra) {
+                minOrderAlert.removeClass('d-none');
+                checkoutBtn.prop('disabled', true);
+            } else {
+                minOrderAlert.addClass('d-none');
+                // Solo habilitar si no hay problemas de stock
+                if ($('#checkoutBtnText').text() === 'Proceder al Pago') {
+                    checkoutBtn.prop('disabled', false);
+                }
             }
         }
 
@@ -682,8 +714,14 @@
                     $('.stock-warning').addClass('d-none');
                     
                     if (response.valid) {
-                        checkoutBtn.prop('disabled', false);
                         checkoutBtnText.text('Proceder al Pago');
+                        // Verificar monto mínimo antes de habilitar
+                        if (montoMinimoCompra > 0) {
+                            const currentTotal = parseFloat($('#summaryTotal').text().replace(/[^0-9]/g, '')) || 0;
+                            checkoutBtn.prop('disabled', currentTotal < montoMinimoCompra);
+                        } else {
+                            checkoutBtn.prop('disabled', false);
+                        }
                     } else {
                         checkoutBtn.prop('disabled', true);
                         checkoutBtnText.text('Revisar Stock - No Disponible');

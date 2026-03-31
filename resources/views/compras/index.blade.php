@@ -55,11 +55,11 @@
                     <div class="stats-card h-100">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="text-sm text-gray-600 mb-1">Total Compras</p>
-                                <p class="h4 fw-bold text-gray-900 mb-0">{{ $estadisticas['total_compras'] }}</p>
+                                <p class="text-sm text-gray-600 mb-1">Compras Pagadas</p>
+                                <p class="h4 fw-bold text-success mb-0">{{ $estadisticas['compras_pagadas'] }}</p>
                             </div>
-                            <div class="text-primary">
-                                <i class="bi bi-cart-check fs-1"></i>
+                            <div class="text-success">
+                                <i class="bi bi-check-circle fs-1"></i>
                             </div>
                         </div>
                     </div>
@@ -69,11 +69,11 @@
                     <div class="stats-card h-100">
                         <div class="d-flex align-items-center justify-content-between">
                             <div>
-                                <p class="text-sm text-gray-600 mb-1">Compras Pagadas</p>
-                                <p class="h4 fw-bold text-success mb-0">{{ $estadisticas['compras_pagadas'] }}</p>
+                                <p class="text-sm text-gray-600 mb-1">Todas las Compras</p>
+                                <p class="h4 fw-bold text-gray-900 mb-0">{{ $estadisticas['total_compras'] }}</p>
                             </div>
-                            <div class="text-success">
-                                <i class="bi bi-check-circle fs-1"></i>
+                            <div class="text-primary">
+                                <i class="bi bi-list-ul fs-1"></i>
                             </div>
                         </div>
                     </div>

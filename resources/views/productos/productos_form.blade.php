@@ -118,6 +118,19 @@
               @error('categoria_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
 
+            {{-- Orden de visualización --}}
+            <div class="col-md-3 mb-3">
+              <label class="form-label">Orden</label>
+              <input name="orden" type="number"
+                     class="form-control @error('orden') is-invalid @enderror"
+                     value="{{ old('orden', $producto->orden ?? 0) }}"
+                     min="0">
+              @error('orden') <div class="invalid-feedback">{{ $message }}</div> @enderror
+              <small class="text-muted">
+                Los productos se ordenan de menor a mayor. Orden 0 se muestra primero, orden 1 segundo, y así sucesivamente.
+              </small>
+            </div>
+
             {{-- Tiene Variantes --}}
             <div class="col-md-12 mb-3">
               <div class="form-check">
@@ -496,26 +509,13 @@
               @foreach($caracteristicas as $index => $caracteristica)
                 <div class="caracteristica-row mb-3 p-3 border rounded bg-light">
                   <div class="row align-items-end">
-                    <div class="col-md-2 mb-2">
-                      <label class="form-label">Icono</label>
-                      <select name="caracteristicas[{{ $index }}][icono]" class="form-select icono-selector">
-                        @foreach($iconosDisponibles as $iconoKey => $iconoLabel)
-                          <option value="{{ $iconoKey }}" {{ $caracteristica->icono == $iconoKey ? 'selected' : '' }}>
-                            {{ $iconoLabel }}
-                          </option>
-                        @endforeach
-                      </select>
-                      <div class="icono-preview mt-1 text-center">
-                        <i class="bi {{ $caracteristica->icono }} fs-4"></i>
-                      </div>
-                    </div>
-                    <div class="col-md-3 mb-2">
+                    <div class="col-md-4 mb-2">
                       <label class="form-label">Título <span class="text-danger">*</span></label>
                       <input type="text" name="caracteristicas[{{ $index }}][titulo]"
                              class="form-control" value="{{ $caracteristica->titulo }}"
                              placeholder="Ej: Material Premium">
                     </div>
-                    <div class="col-md-5 mb-2">
+                    <div class="col-md-6 mb-2">
                       <label class="form-label">Descripción <span class="text-danger">*</span></label>
                       <input type="text" name="caracteristicas[{{ $index }}][descripcion]"
                              class="form-control" value="{{ $caracteristica->descripcion }}"
@@ -525,6 +525,28 @@
                       <button type="button" class="btn btn-danger btn-sm w-100 removeCaracteristica">
                         <i class="bi bi-trash"></i> Eliminar
                       </button>
+                    </div>
+                  </div>
+                  <div class="row mt-2 align-items-center">
+                    <div class="col-md-4">
+                      <label class="form-label"><i class="bi bi-image"></i> Imagen de la Característica</label>
+                      <input type="file" name="caracteristicas[{{ $index }}][imagen]"
+                             class="form-control form-control-sm caract-imagen-input" accept="image/jpeg,image/png,image/webp">
+                      <input type="hidden" name="caracteristicas[{{ $index }}][imagen_actual]"
+                             value="{{ $caracteristica->imagen }}">
+                    </div>
+                    <div class="col-md-3 caract-imagen-preview">
+                      @if($caracteristica->imagen)
+                        <img src="{{ asset($caracteristica->imagen) }}" class="img-thumbnail" style="max-height:80px;">
+                        <label class="form-check mt-1">
+                          <input type="checkbox" name="caracteristicas[{{ $index }}][eliminar_imagen]"
+                                 class="form-check-input" value="1">
+                          <small class="text-danger">Eliminar imagen</small>
+                        </label>
+                      @endif
+                    </div>
+                    <div class="col-md-5">
+                      <small class="text-muted">Imagen representativa de esta característica. Recomendado: 800x600px. Formatos: JPG, PNG, WebP. Máx: 2MB.</small>
                     </div>
                   </div>
                 </div>
@@ -835,70 +857,20 @@
       // CARACTERÍSTICAS DEL PRODUCTO
       // =============================================
 
-      // Lista de iconos disponibles
-      const iconosDisponibles = {
-        'bi-star': 'Estrella',
-        'bi-star-fill': 'Estrella Llena',
-        'bi-box': 'Caja',
-        'bi-box-seam': 'Caja Sellada',
-        'bi-truck': 'Envío',
-        'bi-shield-check': 'Garantía',
-        'bi-award': 'Premio',
-        'bi-gem': 'Calidad',
-        'bi-lightning': 'Rápido',
-        'bi-heart': 'Favorito',
-        'bi-check-circle': 'Verificado',
-        'bi-tools': 'Herramientas',
-        'bi-gear': 'Configuración',
-        'bi-palette': 'Diseño',
-        'bi-rulers': 'Medidas',
-        'bi-thermometer': 'Temperatura',
-        'bi-droplet': 'Resistente Agua',
-        'bi-sun': 'UV Protección',
-        'bi-battery-full': 'Batería',
-        'bi-wifi': 'Conectividad',
-        'bi-clock': 'Tiempo',
-        'bi-calendar-check': 'Disponibilidad',
-        'bi-recycle': 'Ecológico',
-        'bi-leaf': 'Natural',
-        'bi-hand-thumbs-up': 'Recomendado',
-        'bi-tag': 'Etiqueta',
-        'bi-percent': 'Descuento'
-      };
-
       // Contador para características
       let caracteristicaIndex = {{ isset($caracteristicas) ? $caracteristicas->count() : 0 }};
-
-      // Generar opciones de iconos
-      function generarOpcionesIconos(selectedIcon = 'bi-star') {
-        let options = '';
-        for (const [key, label] of Object.entries(iconosDisponibles)) {
-          const selected = key === selectedIcon ? 'selected' : '';
-          options += `<option value="${key}" ${selected}>${label}</option>`;
-        }
-        return options;
-      }
 
       // Agregar nueva característica
       $('#addCaracteristica').click(function() {
         const template = `
           <div class="caracteristica-row mb-3 p-3 border rounded bg-light">
             <div class="row align-items-end">
-              <div class="col-md-2 mb-2">
-                <label class="form-label">Icono</label>
-                <select name="caracteristicas[${caracteristicaIndex}][icono]" class="form-select icono-selector">
-                  ${generarOpcionesIconos()}
-                </select>
-                <div class="icono-preview mt-1 text-center">
-                  <i class="bi bi-star fs-4"></i>
-                </div>
-              </div>
-              <div class="col-md-3 mb-2">
+              <div class="col-md-4 mb-2">
                 <label class="form-label">Título <span class="text-danger">*</span></label>
                 <input type="text" name="caracteristicas[${caracteristicaIndex}][titulo]"
                        class="form-control" placeholder="Ej: Material Premium">
               </div>
-              <div class="col-md-5 mb-2">
+              <div class="col-md-6 mb-2">
                 <label class="form-label">Descripción <span class="text-danger">*</span></label>
                 <input type="text" name="caracteristicas[${caracteristicaIndex}][descripcion]"
                        class="form-control" placeholder="Ej: Fabricado con materiales de alta calidad">
@@ -907,6 +879,17 @@
                 <button type="button" class="btn btn-danger btn-sm w-100 removeCaracteristica">
                   <i class="bi bi-trash"></i> Eliminar
                 </button>
+              </div>
+            </div>
+            <div class="row mt-2 align-items-center">
+              <div class="col-md-4">
+                <label class="form-label"><i class="bi bi-image"></i> Imagen de la Característica</label>
+                <input type="file" name="caracteristicas[${caracteristicaIndex}][imagen]"
+                       class="form-control form-control-sm caract-imagen-input" accept="image/jpeg,image/png,image/webp">
+              </div>
+              <div class="col-md-3 caract-imagen-preview"></div>
+              <div class="col-md-5">
+                <small class="text-muted">Imagen representativa de esta característica. Recomendado: 800x600px. Formatos: JPG, PNG, WebP. Máx: 2MB.</small>
               </div>
             </div>
           </div>
@@ -927,12 +910,24 @@
         }
       });
 
-      // Actualizar preview del icono cuando cambia el selector
-      $(document).on('change', '.icono-selector', function() {
-        const selectedIcon = $(this).val();
-        $(this).closest('.col-md-2').find('.icono-preview i')
-               .attr('class', 'bi ' + selectedIcon + ' fs-4');
+      // Preview de imagen de característica
+      $(document).on('change', '.caract-imagen-input', function() {
+        const preview = $(this).closest('.caracteristica-row').find('.caract-imagen-preview');
+        const file = this.files[0];
+        if (file) {
+          if (file.size > 2 * 1024 * 1024) {
+            Swal.fire('Error', 'La imagen no debe superar 2MB.', 'error');
+            $(this).val('');
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            preview.html(`<img src="${e.target.result}" class="img-thumbnail" style="max-height:80px;">`);
+          };
+          reader.readAsDataURL(file);
+        }
       });
+
     });
   </script>
   @endpush
